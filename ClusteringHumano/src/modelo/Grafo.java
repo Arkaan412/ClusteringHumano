@@ -2,6 +2,7 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class Grafo {
 	private ArrayList<Vertice> vertices;
@@ -20,7 +21,7 @@ public class Grafo {
 		return vertices.get(posicion);
 	}
 
-	private ArrayList<Vertice> obtenerVertices() {
+	private List<Vertice> obtenerVertices() {
 		return vertices;
 	}
 
