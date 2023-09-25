@@ -25,7 +25,7 @@ class PersonaTest {
 	@Test
 	public void sinVecinosTest() {
 		Persona a = new Persona();
-		
+
 		assertEquals(0, a.obtenerCantidadDeVecinos());
 	}
 
@@ -33,9 +33,9 @@ class PersonaTest {
 	public void agregarVecinoTest() {
 		Persona a = new Persona();
 		Persona b = new Persona();
-		
+
 		a.agregarVecino(b);
-		
+
 		assertTrue(a.esVecinoDe(b));
 		assertTrue(b.esVecinoDe(a));
 	}
@@ -44,20 +44,10 @@ class PersonaTest {
 	public void noSeAgregaVecinoDuplicadoTest() {
 		Persona a = new Persona();
 		Persona b = new Persona();
-		
+
 		a.agregarVecino(b);
 		a.agregarVecino(b);
-		
+
 		assertEquals(1, a.obtenerCantidadDeVecinos());
-	}
-	
-	@Test
-	public void equalsTest() {
-		Persona a = new Persona();
-		Persona b = new Persona();
-		
-		a.agregarVecino(b);
-		
-		assertTrue(a.equals(b));
 	}
 }

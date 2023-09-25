@@ -24,29 +24,13 @@ public class Persona extends Vertice {
 		super();
 	}
 
-//	@Override
-//	public int hashCode() {
-//		final int prime = 31;
-//		int result = super.hashCode();
-//		result = prime * result
-//				+ Objects.hash(interesCiencia, interesDeportes, interesEspectaculos, interesMusica, nombre);
-//		return result;
-//	}
-//
-//	@Override
-//	public boolean equals(Object obj) {
-//		if (this == obj) {
-//			return true;
-//		}
-//		if (!super.equals(obj)) {
-//			return false;
-//		}
-//		if (!(obj instanceof Persona)) {
-//			return false;
-//		}
-//		Persona other = (Persona) obj;
-//		return interesCiencia == other.interesCiencia && interesDeportes == other.interesDeportes
-//				&& interesEspectaculos == other.interesEspectaculos && interesMusica == other.interesMusica
-//				&& Objects.equals(nombre, other.nombre);
-//	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+
+		result = prime * result
+				+ Objects.hash(interesCiencia, interesDeportes, interesEspectaculos, interesMusica, nombre);
+		return result;
+	}
 }

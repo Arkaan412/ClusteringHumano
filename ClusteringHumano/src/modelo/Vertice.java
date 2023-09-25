@@ -1,13 +1,21 @@
 package modelo;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public abstract class Vertice {
+	private static int siguienteID = 1;
+
+	private int id;
 	private HashSet<Vertice> vecinos;
 
 	public Vertice() {
 		vecinos = new HashSet<Vertice>();
+
+		id = siguienteID;
+
+		siguienteID++;
 	}
 
 	public void agregarVecino(Vertice vecino) {
@@ -34,25 +42,25 @@ public abstract class Vertice {
 		return vecinos.size();
 	}
 
-	private void verificarLoop(Vertice vecino) {
-		if (this.equals(vecino))
-			throw new IllegalArgumentException("No se admiten loops. Un vértice no puede ser vecino de sí mismo.");
+	public int obtenerId() {
+		return id;
 	}
 
-//	@Override
-//	public int hashCode() {
-//		return Objects.hash(vecinos);
-//	}
-//
-//	@Override
-//	public boolean equals(Object obj) {
-//		if (this == obj) {
-//			return true;
-//		}
-//		if (!(obj instanceof Vertice)) {
-//			return false;
-//		}
-//		Vertice other = (Vertice) obj;
-//		return Objects.equals(vecinos, other.vecinos);
-//	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+
+		if (!(obj instanceof Vertice))
+			return false;
+
+		Vertice other = (Vertice) obj;
+
+		return id == other.id;
+	}
 }

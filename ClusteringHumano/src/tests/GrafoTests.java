@@ -13,7 +13,7 @@ public class GrafoTests {
 	public void agregarVerticesTest() {
 		Grafo grafo = new Grafo();
 		
-		grafo.agregarVertice(new Vertice());
+//		grafo.agregarVertice(new Vertice());
 	}
 
 }
