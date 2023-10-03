@@ -1,78 +1,61 @@
 package modelo;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-public class Grafo {
-	private ArrayList<Vertice> vertices;
-	private HashSet<Arista> aristas;
+public class Grafo<T> {
+	private HashMap<Vertice<T>, HashSet<Vertice<T>>> vertices;
+	private HashSet<Arista<T>> aristas;
 
 	public Grafo() {
-		vertices = new ArrayList<Vertice>();
-		aristas = new HashSet<Arista>();
+		vertices = new HashMap<Vertice<T>, HashSet<Vertice<T>>>();
+		aristas = new HashSet<Arista<T>>();
 	}
 
-	public void agregarVertice(Vertice vertice) {
-		vertices.add(vertice);
+	public void agregarVertice(Vertice<T> vertice) {
+		HashSet<Vertice<T>> listaVecinos = new HashSet<Vertice<T>>();
+
+		vertices.putIfAbsent(vertice, listaVecinos);
 	}
 
-	private Vertice obtenerVertice(int posicion) {
-		return vertices.get(posicion);
+	public void agregarArista(Vertice<T> verticeA, Vertice<T> verticeB) {
+		HashSet<Vertice<T>> listaVecinosA = vertices.get(verticeA);
+		HashSet<Vertice<T>> listaVecinosB = vertices.get(verticeB);
+
+		listaVecinosA.add(verticeB);
+		listaVecinosB.add(verticeA);
 	}
 
-	private List<Vertice> obtenerVertices() {
-		return vertices;
+	public Set<Vertice<T>> getVecinos(Vertice<T> vertice) {
+		HashSet<Vertice<T>> listaVecinos = vertices.get(vertice);
+
+		return listaVecinos;
 	}
 
-	private void eliminarVertice(int posicion) {
-		vertices.remove(posicion);
+	public Set<Arista<T>> getAristas() {
+		return aristas;
 	}
 
-	public void agregarArista(int posicionVerticeA, int posicionVerticeB) {
-		Vertice verticeA = obtenerVertice(posicionVerticeA);
-		Vertice verticeB = obtenerVertice(posicionVerticeB);
-
-		verificarLoop(verticeA, verticeB);
-
-		verticeA.agregarVecino(verticeB);
-		verticeB.agregarVecino(verticeA);
-
-		// agregar arista
+	public int tamanio() {
+		return vertices.size();
 	}
 
-	public void eliminarArista(int posicionVerticeA, int posicionVerticeB) {
-		Vertice verticeA = obtenerVertice(posicionVerticeA);
-		Vertice verticeB = obtenerVertice(posicionVerticeB);
-
-		verticeA.eliminarVecino(verticeB);
-		verticeB.eliminarVecino(verticeA);
-
-		// eliminar arista
+	public int getCantidadVecinos(Vertice<T> vertice) {
+		return getVecinos(vertice).size();
 	}
 
-	public boolean sonVecinos(int posicionVerticeA, int posicionVerticeB) {
-		Vertice verticeA = obtenerVertice(posicionVerticeA);
-		Vertice verticeB = obtenerVertice(posicionVerticeB);
+	public void eliminarVertice(Vertice<T> vertice) {
+		vertices.remove(vertice);
 
-		return verticeA.esVecinoDe(verticeB);
+		eliminarVerticeDeListasDeVecinos(vertice);
 	}
 
-	public Set<Vertice> obtenerVecinosDe(int posicionVertice) {
-		Vertice vertice = obtenerVertice(posicionVertice);
+	private void eliminarVerticeDeListasDeVecinos(Vertice<T> verticeAEliminar) {
+		Set<Vertice<T>> conjuntoVertices = vertices.keySet();
 
-		return vertice.obtenerVecinos();
-	}
-
-	public int obtenerCantidadDeVecinosDe(int posicionVertice) {
-		Vertice vertice = obtenerVertice(posicionVertice);
-
-		return vertice.obtenerCantidadDeVecinos();
-	}
-
-	private void verificarLoop(Vertice verticeA, Vertice verticeB) {
-		if (verticeA.equals(verticeB))
-			throw new IllegalArgumentException("No se admiten loops. Un vértice no puede ser vecino de sí mismo.");
+		for (Vertice<T> verticeActual : conjuntoVertices) {
+			getVecinos(verticeActual).remove(verticeAEliminar);
+		}
 	}
 }

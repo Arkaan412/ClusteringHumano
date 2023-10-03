@@ -2,8 +2,11 @@ package modelo;
 
 import java.util.Objects;
 
-public class Persona extends Vertice {
+public class Persona{
+	private static int siguienteID = 1;
+	
 	private String nombre;
+	private int id;
 
 	private int interesDeportes;
 	private int interesEspectaculos;
@@ -11,17 +14,15 @@ public class Persona extends Vertice {
 	private int interesMusica;
 
 	public Persona(String nombre, int interesDeportes, int interesEspectaculos, int interesCiencia, int interesMusica) {
-		super();
 		this.nombre = nombre;
+		
+		this.id = siguienteID;
+		siguienteID++;		
 
 		this.interesDeportes = interesDeportes;
 		this.interesEspectaculos = interesEspectaculos;
 		this.interesCiencia = interesCiencia;
 		this.interesMusica = interesMusica;
-	}
-
-	public Persona() {
-		super();
 	}
 
 	@Override
@@ -32,5 +33,9 @@ public class Persona extends Vertice {
 		result = prime * result
 				+ Objects.hash(interesCiencia, interesDeportes, interesEspectaculos, interesMusica, nombre);
 		return result;
+	}
+
+	public int getId() {
+		return id;
 	}
 }
