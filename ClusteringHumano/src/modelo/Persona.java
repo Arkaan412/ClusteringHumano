@@ -25,17 +25,24 @@ public class Persona{
 		this.interesMusica = interesMusica;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-
-		result = prime * result
-				+ Objects.hash(interesCiencia, interesDeportes, interesEspectaculos, interesMusica, nombre);
-		return result;
-	}
-
 	public int getId() {
 		return id;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, interesCiencia, interesDeportes, interesEspectaculos, interesMusica, nombre);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Persona)) {
+			return false;
+		}
+		Persona other = (Persona) obj;
+		return id == other.id;
 	}
 }

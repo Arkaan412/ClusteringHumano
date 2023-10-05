@@ -36,19 +36,36 @@ public class Vertice<T> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(carga, id);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-
-		if (!(obj instanceof Vertice))
+		}
+		if (!(obj instanceof Vertice<?>)) {
 			return false;
-
+		}
 		Vertice<?> other = (Vertice<?>) obj;
-
-		return id == other.id;
+		return Objects.equals(carga, other.carga) && id == other.id;
 	}
+
+	@Override
+	public String toString() {
+		return "Vertice " + id;
+	}
+
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (this == obj)
+//			return true;
+//
+//		if (!(obj instanceof Vertice<?>))
+//			return false;
+//
+//		Vertice<?> other = (Vertice<?>) obj;
+//
+//		return id == other.id;
+//	}
 }
