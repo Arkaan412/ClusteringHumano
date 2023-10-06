@@ -55,17 +55,4 @@ public class Vertice<T> {
 	public String toString() {
 		return "Vertice " + id;
 	}
-
-//	@Override
-//	public boolean equals(Object obj) {
-//		if (this == obj)
-//			return true;
-//
-//		if (!(obj instanceof Vertice<?>))
-//			return false;
-//
-//		Vertice<?> other = (Vertice<?>) obj;
-//
-//		return id == other.id;
-//	}
 }

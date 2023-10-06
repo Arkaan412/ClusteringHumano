@@ -3,6 +3,7 @@ package modelo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -35,6 +36,13 @@ public class Grafo<T> {
 		if (!existeVertice(verticeB))
 			throw new IllegalArgumentException("El vértice B indicado no pertenece al grafo.");
 
+		agregarVecino(verticeA, verticeB);
+
+		Arista<T> nuevaArista = new Arista<>(verticeA, verticeB, cargaArista);
+		aristas.add(nuevaArista);
+	}
+
+	private void agregarVecino(Vertice<T> verticeA, Vertice<T> verticeB) {
 		if (sonElMismoVertice(verticeA, verticeB))
 			throw new IllegalArgumentException("Los vértices indicados son el mismo vértice. No se admiten ciclos.");
 
@@ -43,9 +51,6 @@ public class Grafo<T> {
 
 		listaVecinosA.add(verticeB);
 		listaVecinosB.add(verticeA);
-
-//		Arista<T> nuevaArista = new Arista<>(verticeA, verticeB, cargaArista);
-//		aristas.add(nuevaArista);
 	}
 
 	public boolean sonElMismoVertice(Vertice<T> verticeA, Vertice<T> verticeB) {
@@ -70,7 +75,7 @@ public class Grafo<T> {
 	}
 
 	public boolean estaVacio() {
-		return tamanio() == 0;
+		return this.tamanio() == 0;
 	}
 
 	public boolean noTieneVecinos(Vertice<T> vertice) {
@@ -114,11 +119,64 @@ public class Grafo<T> {
 		return vertices.containsKey(vertice);
 	}
 
-//	private boolean existeArista(Arista<T> arista) {
-//		return aristas.contains(arista);
-//	}
-
 	public List<Vertice<T>> obtenerVertices() {
 		return new ArrayList<Vertice<T>>(vertices.keySet());
+	}
+
+	public Arista<T> obtenerAristaMinima() {
+		Iterator<Arista<T>> iterador = aristas.iterator();
+
+		Arista<T> aristaMinima = iterador.next();
+		int cargaAristaMinima = aristaMinima.getCarga();
+
+		while (iterador.hasNext()) {
+			Arista<T> aristaActual = iterador.next();
+			int cargaAristaActual = aristaActual.getCarga();
+
+			if (cargaAristaActual < cargaAristaMinima) {
+				aristaMinima = aristaActual;
+				cargaAristaMinima = cargaAristaActual;
+			}
+		}
+		return aristaMinima;
+	}
+
+	public void formarGrafoAPartirDeAristas(Set<Arista<T>> aristas) {
+		for (Arista<T> aristaActual : aristas) {
+			Vertice<T> verticeA = aristaActual.getVerticeA();
+			Vertice<T> verticeB = aristaActual.getVerticeB();
+
+			agregarVecino(verticeA, verticeB);
+		}
+	}
+	
+	public boolean esConexo() {
+		if (estaVacio())
+			return false;
+
+		int cantidadDeVerticesVisitados = BFS.bfs(this).size();
+
+		return this.tamanio() == cantidadDeVerticesVisitados;
+	}
+
+	public boolean esConexo(Vertice<T> verticeA) {
+		int cantidadDeVerticesVisitados = BFS.bfs(this, verticeA).size();
+
+		return this.tamanio() == cantidadDeVerticesVisitados;
+	}
+
+	public boolean sonAlcanzablesEntreSi(Vertice<T> verticeA, Vertice<T> verticeB) {
+		List<Vertice<T>> verticesVisitados = BFS.bfs(this, verticeA);
+
+		return verticesVisitados.contains(verticeB);
+	}
+	
+	public boolean esArbol() {
+		int cantidadVertices = tamanio();
+		int cantidadAristas = aristas.size();
+		
+		boolean esArbol = esConexo() && cantidadAristas == cantidadVertices - 1; 
+		
+		return esArbol;
 	}
 }

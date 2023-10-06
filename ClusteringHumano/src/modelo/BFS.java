@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class BFS<T> {
-	private Grafo<T> grafo;
-	private ArrayList<Vertice<T>> listaPendientes;
-	private ArrayList<Vertice<T>> visitados;
+public class BFS {
 
-	public BFS(Grafo<T> grafo) {
-		this.grafo = grafo;
-		this.listaPendientes = new ArrayList<>();
-		this.visitados = new ArrayList<>();
+	public static <T> List<Vertice<T>> bfs(Grafo<T> grafo) {
+		Vertice<T> vertice = grafo.obtenerVertices().get(0);
+
+		List<Vertice<T>> verticesVisitados = bfs(grafo, vertice);
+
+		return verticesVisitados;
 	}
 
-	public List<Vertice<T>> bfs(Vertice<T> vertice) {
+	public static <T> List<Vertice<T>> bfs(Grafo<T> grafo, Vertice<T> vertice) {
+		ArrayList<Vertice<T>> listaPendientes = new ArrayList<>();
+		ArrayList<Vertice<T>> visitados = new ArrayList<>();
+
 		listaPendientes.add(vertice);
 
 		while (!listaPendientes.isEmpty()) {
@@ -33,47 +35,10 @@ public class BFS<T> {
 					listaPendientes.add(vecinoActual);
 				}
 			}
-			listaPendientes.remove(0);
-		}
-		return visitados;
-	}
-
-	public List<Vertice<T>> dfs(Vertice<T> vertice) {
-		listaPendientes.add(vertice);
-
-		while (!listaPendientes.isEmpty()) {
-			Vertice<T> actual = listaPendientes.get(listaPendientes.size() - 1);
-
-			visitados.add(actual);
-
-			Set<Vertice<T>> listaVecinos = grafo.obtenerVecinos(actual);
-
-			for (Vertice<T> vecinoActual : listaVecinos) {
-				boolean vecinoaActualNoFueVisitado = !visitados.contains(vecinoActual);
-				boolean vecinoaActualNoEstaEnPendientes = !listaPendientes.contains(vecinoActual);
-
-				if (vecinoaActualNoFueVisitado && vecinoaActualNoEstaEnPendientes) {
-					listaPendientes.add(vecinoActual);
-				}
-			}
 
 			listaPendientes.remove(0);
 		}
 
 		return visitados;
-	}
-
-	public boolean esConexo(Vertice<T> verticeA) {
-		this.listaPendientes = new ArrayList<>();
-		this.visitados = new ArrayList<>();
-
-		return grafo.tamanio() == bfs(verticeA).size();
-	}
-
-	public boolean esConexoDfs(Vertice<T> verticeA) {
-		this.listaPendientes = new ArrayList<>();
-		this.visitados = new ArrayList<>();
-
-		return grafo.tamanio() == dfs(verticeA).size();
 	}
 }

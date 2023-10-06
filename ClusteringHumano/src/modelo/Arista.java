@@ -16,10 +16,10 @@ public class Arista<T> {
 	public Arista(Vertice<T> verticeA, Vertice<T> verticeB) {
 		this.setVerticeA(verticeA);
 		this.setVerticeB(verticeB);
+		
+		this.carga = 0;
 	}
 
-	public Arista() {
-	}
 
 	public int getCarga() {
 		return carga;
@@ -29,15 +29,19 @@ public class Arista<T> {
 		return verticeA;
 	}
 
-	public void setVerticeA(Vertice<T> verticeA) {
-		this.verticeA = verticeA;
-	}
-
 	public Vertice<T> getVerticeB() {
 		return verticeB;
 	}
 
+	public void setVerticeA(Vertice<T> verticeA) {
+		this.verticeA = verticeA;
+	}
+
 	public void setVerticeB(Vertice<T> verticeB) {
 		this.verticeB = verticeB;
+	}
+	
+	public boolean perteneceAlVertice(Vertice<T> vertice) {
+		return vertice == verticeA || vertice == verticeB;
 	}
 }
