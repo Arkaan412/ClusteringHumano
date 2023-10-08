@@ -3,7 +3,6 @@ package modelo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -30,6 +29,15 @@ public class Grafo<T> {
 		crearArista(verticeA, verticeB, cargaArista);
 	}
 
+	public void agregarArista(Arista<T> arista) {
+		Vertice<T> verticeA = arista.getVerticeA();
+		Vertice<T> verticeB = arista.getVerticeB();
+
+		int carga = arista.getCarga();
+
+		crearArista(verticeA, verticeB, carga);
+	}
+
 	private void crearArista(Vertice<T> verticeA, Vertice<T> verticeB, int cargaArista) {
 		if (!existeVertice(verticeA))
 			throw new IllegalArgumentException("El vértice A indicado no pertenece al grafo.");
@@ -39,7 +47,9 @@ public class Grafo<T> {
 		agregarVecino(verticeA, verticeB);
 
 		Arista<T> nuevaArista = new Arista<>(verticeA, verticeB, cargaArista);
-		aristas.add(nuevaArista);
+
+		if (!existeArista(nuevaArista))
+			aristas.add(nuevaArista);
 	}
 
 	private void agregarVecino(Vertice<T> verticeA, Vertice<T> verticeB) {
@@ -57,6 +67,35 @@ public class Grafo<T> {
 		return verticeA.equals(verticeB);
 	}
 
+	// private boolean existeArista(Arista<T> arista) {
+	// return aristas.contains(arista);
+	// }
+
+	private boolean existeVertice(Vertice<T> vertice) {
+		return vertices.containsKey(vertice);
+	}
+
+	// private boolean existeArista(Arista<T> arista) {
+	// return aristas.contains(arista);
+	// }
+
+	private boolean existeArista(Arista<T> arista) {
+		for (Arista<T> aristaActual : aristas) {
+			if (aristaActual.equals(arista)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public List<Vertice<T>> obtenerVertices() {
+		return new ArrayList<Vertice<T>>(vertices.keySet());
+	}
+
+	public List<Arista<T>> obtenerAristas() {
+		return new ArrayList<Arista<T>>(aristas);
+	}
+
 	public Set<Vertice<T>> obtenerVecinos(Vertice<T> vertice) {
 		if (!existeVertice(vertice))
 			throw new IllegalArgumentException("El vértice indicado no pertenece al grafo.");
@@ -66,27 +105,25 @@ public class Grafo<T> {
 		return listaVecinos;
 	}
 
-	public Set<Arista<T>> obtenerAristas() {
-		return aristas;
-	}
-
-	public int tamanio() {
-		return vertices.size();
-	}
-
-	public boolean estaVacio() {
-		return this.tamanio() == 0;
-	}
-
-	public boolean noTieneVecinos(Vertice<T> vertice) {
-		return obtenerCantidadVecinos(vertice) == 0;
-	}
-
 	public int obtenerCantidadVecinos(Vertice<T> vertice) {
 		if (!existeVertice(vertice))
 			throw new IllegalArgumentException("El vértice indicado no pertenece al grafo.");
 
 		return obtenerVecinos(vertice).size();
+	}
+
+	public boolean sonVecinos(Vertice<T> verticeA, Vertice<T> verticeB) {
+		if (!existeVertice(verticeA) || !existeVertice(verticeB))
+			return false;
+
+		boolean BEsVecinoDeA = obtenerVecinos(verticeA).contains(verticeB);
+		boolean AEsVecinoDeB = obtenerVecinos(verticeB).contains(verticeA);
+
+		return BEsVecinoDeA && AEsVecinoDeB;
+	}
+
+	public boolean noTieneVecinos(Vertice<T> vertice) {
+		return obtenerCantidadVecinos(vertice) == 0;
 	}
 
 	public void eliminarVertice(Vertice<T> vertice) {
@@ -105,51 +142,18 @@ public class Grafo<T> {
 		}
 	}
 
-	public boolean sonVecinos(Vertice<T> verticeA, Vertice<T> verticeB) {
-		if (!existeVertice(verticeA) || !existeVertice(verticeB))
-			return false;
-
-		boolean BEsVecinoDeA = obtenerVecinos(verticeA).contains(verticeB);
-		boolean AEsVecinoDeB = obtenerVecinos(verticeB).contains(verticeA);
-
-		return BEsVecinoDeA && AEsVecinoDeB;
+	public int tamanio() {
+		return vertices.size();
 	}
 
-	private boolean existeVertice(Vertice<T> vertice) {
-		return vertices.containsKey(vertice);
+	public boolean estaVacio() {
+		return this.tamanio() == 0;
 	}
 
-	public List<Vertice<T>> obtenerVertices() {
-		return new ArrayList<Vertice<T>>(vertices.keySet());
-	}
+//	private boolean existeArista(Arista<T> arista) {
+//		return aristas.contains(arista);
+//	}
 
-	public Arista<T> obtenerAristaMinima() {
-		Iterator<Arista<T>> iterador = aristas.iterator();
-
-		Arista<T> aristaMinima = iterador.next();
-		int cargaAristaMinima = aristaMinima.getCarga();
-
-		while (iterador.hasNext()) {
-			Arista<T> aristaActual = iterador.next();
-			int cargaAristaActual = aristaActual.getCarga();
-
-			if (cargaAristaActual < cargaAristaMinima) {
-				aristaMinima = aristaActual;
-				cargaAristaMinima = cargaAristaActual;
-			}
-		}
-		return aristaMinima;
-	}
-
-	public void formarGrafoAPartirDeAristas(Set<Arista<T>> aristas) {
-		for (Arista<T> aristaActual : aristas) {
-			Vertice<T> verticeA = aristaActual.getVerticeA();
-			Vertice<T> verticeB = aristaActual.getVerticeB();
-
-			agregarVecino(verticeA, verticeB);
-		}
-	}
-	
 	public boolean esConexo() {
 		if (estaVacio())
 			return false;
@@ -170,13 +174,13 @@ public class Grafo<T> {
 
 		return verticesVisitados.contains(verticeB);
 	}
-	
+
 	public boolean esArbol() {
 		int cantidadVertices = tamanio();
 		int cantidadAristas = aristas.size();
-		
-		boolean esArbol = esConexo() && cantidadAristas == cantidadVertices - 1; 
-		
+
+		boolean esArbol = esConexo() && cantidadAristas == cantidadVertices - 1;
+
 		return esArbol;
 	}
 }

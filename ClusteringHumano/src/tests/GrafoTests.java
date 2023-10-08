@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import modelo.Arista;
 import modelo.Grafo;
 import modelo.Vertice;
 
@@ -125,6 +126,74 @@ class GrafoTests {
 
 		assertFalse(grafo.noTieneVecinos(vertice1));
 		assertFalse(grafo.noTieneVecinos(vertice2));
+	}
+
+	@Test
+	void seCreaAristaTest() {
+		Grafo<Integer> grafo = new Grafo<Integer>();
+		
+		Vertice<Integer> vertice1 = new Vertice<Integer>();
+		Vertice<Integer> vertice2 = new Vertice<Integer>();
+		
+		grafo.agregarVertice(vertice1);
+		grafo.agregarVertice(vertice2);
+		
+		grafo.agregarArista(vertice1, vertice2);
+		grafo.agregarArista(vertice2, vertice1);
+		grafo.agregarArista(vertice1, vertice2);
+
+		assertTrue(grafo.obtenerAristas().size() == 1);	
+	}
+	
+	@Test
+	void aristaInstanciadaCorrectamenteTest() {
+		Grafo<Integer> grafo = new Grafo<Integer>();
+
+		Vertice<Integer> vertice1 = new Vertice<Integer>();
+		Vertice<Integer> vertice2 = new Vertice<Integer>();
+
+		grafo.agregarVertice(vertice1);
+		grafo.agregarVertice(vertice2);
+		
+		int cargaArista = 5;
+		
+		grafo.agregarArista(vertice1, vertice2, cargaArista);
+
+		Arista<Integer> arista = grafo.obtenerAristas().get(0);
+		
+		Vertice<Integer> verticeA = arista.getVerticeA();
+		Vertice<Integer> verticeB = arista.getVerticeB();
+		
+		assertTrue(verticeA.equals(vertice1));	
+		assertTrue(verticeB.equals(vertice2));	
+		assertTrue(arista.getCarga() == cargaArista);	
+	}
+	
+	@Test
+	void agregarAristasAPartirDeAristasYaInstanciadas() {
+		Grafo<Integer> grafo = new Grafo<Integer>();
+
+		Vertice<Integer> vertice1 = new Vertice<Integer>();
+		Vertice<Integer> vertice2 = new Vertice<Integer>();
+		Vertice<Integer> vertice3 = new Vertice<Integer>();
+		Vertice<Integer> vertice4 = new Vertice<Integer>();
+
+		grafo.agregarVertice(vertice1);
+		grafo.agregarVertice(vertice2);
+		grafo.agregarVertice(vertice3);
+		grafo.agregarVertice(vertice4);
+
+		Arista<Integer> arista12 = new Arista<>(vertice1, vertice2);
+		Arista<Integer> arista24 = new Arista<>(vertice2, vertice4);
+		Arista<Integer> arista34 = new Arista<>(vertice3, vertice4);
+
+		grafo.agregarArista(arista12);
+		grafo.agregarArista(arista24);
+		grafo.agregarArista(arista34);
+
+		assertTrue(grafo.sonVecinos(vertice1, vertice2));
+		assertTrue(grafo.sonVecinos(vertice2, vertice4));
+		assertTrue(grafo.sonVecinos(vertice3, vertice4));
 	}
 
 	@Test
@@ -466,55 +535,55 @@ class GrafoTests {
 
 		assertFalse(grafo.sonAlcanzablesEntreSi(vertice1, vertice7));
 	}
-	
+
 	@Test
 	void esArbolTest() {
 		Grafo<Integer> grafo = new Grafo<Integer>();
-		
+
 		Vertice<Integer> vertice1 = new Vertice<Integer>();
 		Vertice<Integer> vertice2 = new Vertice<Integer>();
 		Vertice<Integer> vertice3 = new Vertice<Integer>();
-		
+
 		grafo.agregarVertice(vertice1);
 		grafo.agregarVertice(vertice2);
 		grafo.agregarVertice(vertice3);
-		
+
 		grafo.agregarArista(vertice1, vertice2);
 		grafo.agregarArista(vertice2, vertice3);
-		
+
 		assertTrue(grafo.esArbol());
 	}
-	
+
 	@Test
 	void grafoDeUnVerticeArbolTest() {
 		Grafo<Integer> grafo = new Grafo<Integer>();
-		
+
 		Vertice<Integer> vertice1 = new Vertice<Integer>();
 
 		grafo.agregarVertice(vertice1);
-		
+
 		assertTrue(grafo.esArbol());
 	}
 
 	@Test
 	void noEsArbolPorTenerCiclosTest() {
 		Grafo<Integer> grafo = new Grafo<Integer>();
-		
+
 		Vertice<Integer> vertice1 = new Vertice<Integer>();
 		Vertice<Integer> vertice2 = new Vertice<Integer>();
 		Vertice<Integer> vertice3 = new Vertice<Integer>();
-		
+
 		grafo.agregarVertice(vertice1);
 		grafo.agregarVertice(vertice2);
 		grafo.agregarVertice(vertice3);
-		
+
 		grafo.agregarArista(vertice1, vertice2);
 		grafo.agregarArista(vertice1, vertice3);
 		grafo.agregarArista(vertice2, vertice3);
-		
+
 		assertFalse(grafo.esArbol());
 	}
-	
+
 	@Test
 	void noEsArbolGrafoPorNoSerConexoTest() {
 		Grafo<Integer> grafo = new Grafo<Integer>();

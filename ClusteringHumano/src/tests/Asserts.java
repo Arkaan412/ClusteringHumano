@@ -1,5 +1,6 @@
 package tests;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public class Asserts {
@@ -11,5 +12,12 @@ public class Asserts {
 			return false;
 
 		return coleccionA.containsAll(coleccionB);
+	}
+
+	public static boolean compararArreglos(int[] arregloA, int[] arregloB) {
+		Arrays.sort(arregloA);
+		Arrays.sort(arregloB);
+		
+		return Arrays.equals(arregloA, arregloB);
 	}
 }

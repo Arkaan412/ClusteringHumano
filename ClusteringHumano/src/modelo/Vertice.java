@@ -3,7 +3,7 @@ package modelo;
 import java.util.Objects;
 
 public class Vertice<T> {
-	private static int siguienteID = 1;
+	private static int siguienteID = 0;
 
 	private int id;
 	private T carga;
@@ -48,6 +48,7 @@ public class Vertice<T> {
 			return false;
 		}
 		Vertice<?> other = (Vertice<?>) obj;
+
 		return Objects.equals(carga, other.carga) && id == other.id;
 	}
 
