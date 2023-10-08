@@ -14,8 +14,6 @@ public class UnionFind {
 		for (int i = 0; i < raices.length; i++) {
 			Vertice<T> verticeActual = vertices.get(i);
 
-//			System.out.print(verticeActual.getId());
-
 			raices[i] = verticeActual.getId();
 		}
 	}
