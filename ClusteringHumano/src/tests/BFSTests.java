@@ -2,50 +2,100 @@ package tests;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import modelo.BFS;
-import modelo.Grafo;
-import modelo.Vertice;
+import grafo.BFS;
+import grafo.Grafo;
+import grafo.Vertice;
 
 class BFSTests {
+	private static Grafo<Integer> grafo;
 
-	@Test
-	void bfsEnVerticeQueNoPerrteneceAlGrafoTest() {
-		Grafo<Integer> grafo = new Grafo<Integer>();
+	private static Vertice<Integer> vertice0;
+	private static Vertice<Integer> vertice1;
+	private static Vertice<Integer> vertice2;
+	private static Vertice<Integer> vertice3;
+	private static Vertice<Integer> vertice4;
+	private static Vertice<Integer> vertice5;
+	private static Vertice<Integer> vertice6;
 
-		Vertice<Integer> vertice1 = new Vertice<Integer>();
+	@BeforeAll
+	static void setUp() {
+		grafo = new Grafo<Integer>();
 
-		assertThrows(IllegalArgumentException.class, () -> BFS.bfs(grafo, vertice1));
+		vertice0 = new Vertice<Integer>();
+		vertice1 = new Vertice<Integer>();
+		vertice2 = new Vertice<Integer>();
+		vertice3 = new Vertice<Integer>();
+		vertice4 = new Vertice<Integer>();
+		vertice5 = new Vertice<Integer>();
+		vertice6 = new Vertice<Integer>();
+	}
+
+	@AfterEach
+	void tearDown() {
+		grafo.eliminarVertice(vertice0);
+		grafo.eliminarVertice(vertice1);
+		grafo.eliminarVertice(vertice2);
+		grafo.eliminarVertice(vertice3);
+		grafo.eliminarVertice(vertice4);
+		grafo.eliminarVertice(vertice5);
+		grafo.eliminarVertice(vertice6);
 	}
 	
 	@Test
-	void bfsEnGrafoConexoTest() {
-		Grafo<Integer> grafo = new Grafo<Integer>();
+	void bfsEnVerticeQueNoPerteneceAlGrafoTest() {
+		assertThrows(IllegalArgumentException.class, () -> BFS.bfs(grafo, vertice0));
+	}
+	
+	@Test
+	void bfsEnGrafoVacioTest() {
+		List<Vertice<Integer>> verticesVisitados = BFS.bfs(grafo);
+		
+		int cantidadDeVerticesVisitados = verticesVisitados.size();
 
-		Vertice<Integer> vertice1 = new Vertice<Integer>();
-		Vertice<Integer> vertice2 = new Vertice<Integer>();
-		Vertice<Integer> vertice3 = new Vertice<Integer>();
-
-		grafo.agregarVertice(vertice1);
-		grafo.agregarVertice(vertice2);
-		grafo.agregarVertice(vertice3);
-
-		grafo.agregarArista(vertice1, vertice2);
-		grafo.agregarArista(vertice1, vertice3);
-		grafo.agregarArista(vertice2, vertice3);
+		assertEquals(0, cantidadDeVerticesVisitados);
+	}
+	
+	@Test
+	void bfsEnGrafoDeUnVerticeTest() {
+		grafo.agregarVertice(vertice0);
 
 		ArrayList<Vertice<Integer>> verticesVisitadosEsperados = new ArrayList<Vertice<Integer>>();
 
+		verticesVisitadosEsperados.add(vertice0);
+
+		List<Vertice<Integer>> verticesVisitados = BFS.bfs(grafo, vertice0);
+
+		boolean sonIguales = Asserts.compararColecciones(verticesVisitados, verticesVisitadosEsperados);
+
+		assertTrue(sonIguales);
+	}
+
+	@Test
+	void bfsEnGrafoConexoTest() {
+		grafo.agregarVertice(vertice0);
+		grafo.agregarVertice(vertice1);
+		grafo.agregarVertice(vertice2);
+
+		grafo.agregarArista(vertice0, vertice1);
+		grafo.agregarArista(vertice0, vertice2);
+		grafo.agregarArista(vertice1, vertice2);
+
+		ArrayList<Vertice<Integer>> verticesVisitadosEsperados = new ArrayList<Vertice<Integer>>();
+
+		verticesVisitadosEsperados.add(vertice0);
 		verticesVisitadosEsperados.add(vertice1);
 		verticesVisitadosEsperados.add(vertice2);
-		verticesVisitadosEsperados.add(vertice3);
 
-		List<Vertice<Integer>> verticesVisitados = BFS.bfs(grafo, vertice1);
+		List<Vertice<Integer>> verticesVisitados = BFS.bfs(grafo, vertice0);
 
 		boolean sonIguales = Asserts.compararColecciones(verticesVisitados, verticesVisitadosEsperados);
 
@@ -54,41 +104,31 @@ class BFSTests {
 
 	@Test
 	void bfsEnGrafoNoConexoTest() {
-		Grafo<Integer> grafo = new Grafo<Integer>();
-
-		Vertice<Integer> vertice1 = new Vertice<Integer>();
-		Vertice<Integer> vertice2 = new Vertice<Integer>();
-		Vertice<Integer> vertice3 = new Vertice<Integer>();
-		Vertice<Integer> vertice4 = new Vertice<Integer>();
-		Vertice<Integer> vertice5 = new Vertice<Integer>();
-		Vertice<Integer> vertice6 = new Vertice<Integer>();
-		Vertice<Integer> vertice7 = new Vertice<Integer>();
-
+		grafo.agregarVertice(vertice0);
 		grafo.agregarVertice(vertice1);
 		grafo.agregarVertice(vertice2);
 		grafo.agregarVertice(vertice3);
 		grafo.agregarVertice(vertice4);
 		grafo.agregarVertice(vertice5);
 		grafo.agregarVertice(vertice6);
-		grafo.agregarVertice(vertice7);
 
+		grafo.agregarArista(vertice0, vertice1);
+		grafo.agregarArista(vertice0, vertice2);
 		grafo.agregarArista(vertice1, vertice2);
 		grafo.agregarArista(vertice1, vertice3);
-		grafo.agregarArista(vertice2, vertice3);
 		grafo.agregarArista(vertice2, vertice4);
-		grafo.agregarArista(vertice3, vertice5);
-		grafo.agregarArista(vertice4, vertice5);
-		grafo.agregarArista(vertice6, vertice7);
+		grafo.agregarArista(vertice3, vertice4);
+		grafo.agregarArista(vertice5, vertice6);
 
 		ArrayList<Vertice<Integer>> verticesVisitadosEsperados = new ArrayList<Vertice<Integer>>();
 
+		verticesVisitadosEsperados.add(vertice0);
 		verticesVisitadosEsperados.add(vertice1);
 		verticesVisitadosEsperados.add(vertice2);
 		verticesVisitadosEsperados.add(vertice3);
 		verticesVisitadosEsperados.add(vertice4);
-		verticesVisitadosEsperados.add(vertice5);
 
-		List<Vertice<Integer>> verticesVisitados = BFS.bfs(grafo, vertice1);
+		List<Vertice<Integer>> verticesVisitados = BFS.bfs(grafo, vertice0);
 
 		boolean sonIguales = Asserts.compararColecciones(verticesVisitados, verticesVisitadosEsperados);
 

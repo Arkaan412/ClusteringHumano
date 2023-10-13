@@ -1,4 +1,4 @@
-package modelo;
+package grafo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class Kruskal<T> {
 			
 			Vertice<T> verticeA = aristaMinima.getVerticeA();
 			Vertice<T> verticeB = aristaMinima.getVerticeB();
-			
+			System.out.println("union");
 			unionFind.union(verticeA, verticeB);
 		}
 
@@ -40,6 +40,7 @@ public class Kruskal<T> {
 	}
 
 	private Arista<T> obtenerAristaMinimaQueNoFormeCiclo(ArrayList<Arista<T>> aristasDeG) {
+		System.out.println("obtenerAristaMinimaQueNoFormeCiclo");
 		Arista<T> aristaMinima = obtenerAristaMinima(aristasDeG);
 
 		while (aristaFormaCiclo(aristaMinima)) {
@@ -53,7 +54,7 @@ public class Kruskal<T> {
 	private boolean aristaFormaCiclo(Arista<T> aristaActual) {
 		Vertice<T> verticeA = aristaActual.getVerticeA();
 		Vertice<T> verticeB = aristaActual.getVerticeB();
-
+		System.out.println("aristaFormaCiclo");
 		boolean formaCiclo = unionFind.find(verticeA, verticeB);
 
 		return formaCiclo;
@@ -61,7 +62,7 @@ public class Kruskal<T> {
 
 	private Arista<T> obtenerAristaMinima(ArrayList<Arista<T>> aristasDeG) {
 		Arista<T> aristaMinima = aristasDeG.get(0);
-
+		System.out.println("obtenerAristaMinima");
 		int cargaAristaMinima = aristaMinima.getCarga();
 
 		for (Arista<T> aristaActual : aristasDeG) {
@@ -78,6 +79,12 @@ public class Kruskal<T> {
 
 	public void formarGrafoAPartirDeAristas(List<Arista<T>> aristas) {
 		for (Arista<T> aristaActual : aristas) {
+			Vertice<T> verticeA = aristaActual.getVerticeA();
+			Vertice<T> verticeB = aristaActual.getVerticeB();
+			
+			agmT.agregarVertice(verticeA);
+			agmT.agregarVertice(verticeB);
+			
 			agmT.agregarArista(aristaActual);
 		}
 	}

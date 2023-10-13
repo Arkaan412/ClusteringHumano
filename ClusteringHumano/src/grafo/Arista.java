@@ -1,4 +1,4 @@
-package modelo;
+package grafo;
 
 import java.util.Objects;
 
@@ -60,7 +60,8 @@ public class Arista<T> {
 			return false;
 		}
 		Arista<?> other = (Arista<?>) obj;
-
+		
+		// La carga no influye en la igualdad. Nos interesa comparar por vértices.
 		boolean sonIguales = Objects.equals(verticeA, other.verticeA) && Objects.equals(verticeB, other.verticeB);
 		boolean sonInversas = Objects.equals(verticeA, other.verticeB) && Objects.equals(verticeB, other.verticeA);
 

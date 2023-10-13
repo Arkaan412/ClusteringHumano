@@ -1,4 +1,4 @@
-package modelo;
+package grafo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +44,7 @@ public class Grafo<T> {
 		if (!existeVertice(verticeB))
 			throw new IllegalArgumentException("El vértice B indicado no pertenece al grafo.");
 
-		agregarVecino(verticeA, verticeB);
+		agregarVecinos(verticeA, verticeB);
 
 		Arista<T> nuevaArista = new Arista<>(verticeA, verticeB, cargaArista);
 
@@ -52,7 +52,7 @@ public class Grafo<T> {
 			aristas.add(nuevaArista);
 	}
 
-	private void agregarVecino(Vertice<T> verticeA, Vertice<T> verticeB) {
+	private void agregarVecinos(Vertice<T> verticeA, Vertice<T> verticeB) {
 		if (sonElMismoVertice(verticeA, verticeB))
 			throw new IllegalArgumentException("Los vértices indicados son el mismo vértice. No se admiten ciclos.");
 
@@ -67,19 +67,19 @@ public class Grafo<T> {
 		return verticeA.equals(verticeB);
 	}
 
-	// private boolean existeArista(Arista<T> arista) {
-	// return aristas.contains(arista);
-	// }
-
-	private boolean existeVertice(Vertice<T> vertice) {
+	public boolean existeVertice(Vertice<T> vertice) {
 		return vertices.containsKey(vertice);
 	}
 
-	// private boolean existeArista(Arista<T> arista) {
-	// return aristas.contains(arista);
-	// }
+	/*
+	 * El contains() no devuelve true cuando se pregunta por una arista AB y existe
+	 * una arista BA. No respeta la igualdad descripta en la clase Arista.
+	 */
+//	public boolean existeArista(Arista<T> arista) {
+//		return aristas.contains(arista);	
+//	}
 
-	private boolean existeArista(Arista<T> arista) {
+	public boolean existeArista(Arista<T> arista) {
 		for (Arista<T> aristaActual : aristas) {
 			if (aristaActual.equals(arista)) {
 				return true;
@@ -96,11 +96,11 @@ public class Grafo<T> {
 		return new ArrayList<Arista<T>>(aristas);
 	}
 
-	public Set<Vertice<T>> obtenerVecinos(Vertice<T> vertice) {
+	public ArrayList<Vertice<T>> obtenerVecinos(Vertice<T> vertice) {
 		if (!existeVertice(vertice))
 			throw new IllegalArgumentException("El vértice indicado no pertenece al grafo.");
 
-		HashSet<Vertice<T>> listaVecinos = vertices.get(vertice);
+		ArrayList<Vertice<T>> listaVecinos = new ArrayList<>(vertices.get(vertice));
 
 		return listaVecinos;
 	}
@@ -119,7 +119,11 @@ public class Grafo<T> {
 		boolean BEsVecinoDeA = obtenerVecinos(verticeA).contains(verticeB);
 		boolean AEsVecinoDeB = obtenerVecinos(verticeB).contains(verticeA);
 
-		return BEsVecinoDeA && AEsVecinoDeB;
+		Arista<T> aristaAB = new Arista<>(verticeA, verticeB);
+
+		boolean existeArista = existeArista(aristaAB);
+
+		return BEsVecinoDeA && AEsVecinoDeB && existeArista;
 	}
 
 	public boolean noTieneVecinos(Vertice<T> vertice) {
@@ -128,18 +132,56 @@ public class Grafo<T> {
 
 	public void eliminarVertice(Vertice<T> vertice) {
 		if (existeVertice(vertice)) {
-			vertices.remove(vertice);
+			eliminarAristasConectadas(vertice);
 
-			eliminarVerticeDeListasDeVecinos(vertice);
+			vertices.remove(vertice);
 		}
 	}
 
-	private void eliminarVerticeDeListasDeVecinos(Vertice<T> verticeAEliminar) {
+	private void eliminarAristasConectadas(Vertice<T> verticeAEliminar) {
 		Set<Vertice<T>> conjuntoVertices = vertices.keySet();
 
 		for (Vertice<T> verticeActual : conjuntoVertices) {
-			obtenerVecinos(verticeActual).remove(verticeAEliminar);
+			if (!sonElMismoVertice(verticeActual, verticeAEliminar))
+				eliminarArista(verticeActual, verticeAEliminar);
 		}
+	}
+
+	public void eliminarArista(Arista<T> arista) {
+		if (existeArista(arista)) {
+			Vertice<T> verticeA = arista.getVerticeA();
+			Vertice<T> verticeB = arista.getVerticeB();
+
+			eliminarVecinos(verticeA, verticeB);
+
+			aristas.remove(arista);
+		}
+	}
+
+	public void eliminarArista(Vertice<T> verticeA, Vertice<T> verticeB) {
+		Arista<T> aristaAEliminar = obtenerArista(verticeA, verticeB);
+
+		eliminarVecinos(verticeA, verticeB);
+
+		aristas.remove(aristaAEliminar);
+	}
+
+	private Arista<T> obtenerArista(Vertice<T> verticeA, Vertice<T> verticeB) {
+		Arista<T> arista = new Arista<>(verticeA, verticeB);
+		List<Arista<T>> aristas = obtenerAristas();
+
+		for (Arista<T> aristaActual : aristas) {
+			if (aristaActual.equals(arista)) {
+				return aristaActual;
+			}
+		}
+
+		return null;
+	}
+
+	private void eliminarVecinos(Vertice<T> verticeA, Vertice<T> verticeB) {
+		obtenerVecinos(verticeA).remove(verticeB);
+		obtenerVecinos(verticeB).remove(verticeA);
 	}
 
 	public int tamanio() {
@@ -150,21 +192,11 @@ public class Grafo<T> {
 		return this.tamanio() == 0;
 	}
 
-//	private boolean existeArista(Arista<T> arista) {
-//		return aristas.contains(arista);
-//	}
-
 	public boolean esConexo() {
-		if (estaVacio())
+		if (this.estaVacio())
 			return false;
 
 		int cantidadDeVerticesVisitados = BFS.bfs(this).size();
-
-		return this.tamanio() == cantidadDeVerticesVisitados;
-	}
-
-	public boolean esConexo(Vertice<T> verticeA) {
-		int cantidadDeVerticesVisitados = BFS.bfs(this, verticeA).size();
 
 		return this.tamanio() == cantidadDeVerticesVisitados;
 	}
@@ -182,5 +214,35 @@ public class Grafo<T> {
 		boolean esArbol = esConexo() && cantidadAristas == cantidadVertices - 1;
 
 		return esArbol;
+	}
+
+	public boolean esCompleto() {
+		if (this.estaVacio())
+			return false;
+
+		List<Vertice<T>> vertices = obtenerVertices();
+
+		int cantidadDeVertices = tamanio();
+
+		for (Vertice<T> verticeActual : vertices) {
+			int cantidadDeVecinosDelVerticeActual = obtenerCantidadVecinos(verticeActual);
+
+			if (cantidadDeVecinosDelVerticeActual != cantidadDeVertices - 1) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public void convertirAGrafoCompleto() {
+		List<Vertice<T>> vertices = obtenerVertices();
+
+		for (Vertice<T> verticeActual : vertices) {
+			for (Vertice<T> vecinoAAgregar : vertices) {
+				if (!sonElMismoVertice(verticeActual, vecinoAAgregar) && !sonVecinos(verticeActual, vecinoAAgregar))
+					agregarArista(verticeActual, vecinoAAgregar);
+			}
+		}
 	}
 }

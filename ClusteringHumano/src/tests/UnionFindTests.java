@@ -6,16 +6,16 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import modelo.Grafo;
-import modelo.Vertice;
-import modelo.UnionFind;
+import grafo.Grafo;
+import grafo.UnionFind;
+import grafo.Vertice;
 
 class UnionFindTests {
-	static Grafo<Integer> grafo;
+	private static Grafo<Integer> grafo;
 
-	static Vertice<Integer> vertice0;
-	static Vertice<Integer> vertice1;
-	static Vertice<Integer> vertice2;
+	private static Vertice<Integer> vertice0;
+	private static Vertice<Integer> vertice1;
+	private static Vertice<Integer> vertice2;
 
 	@BeforeAll
 	static void setUp() {

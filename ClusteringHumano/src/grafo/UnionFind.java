@@ -1,4 +1,4 @@
-package modelo;
+package grafo;
 
 import java.util.ArrayList;
 
@@ -20,12 +20,9 @@ public class UnionFind {
 
 	public <T> int raiz(Vertice<T> vertice) {
 		int idVertice = vertice.getId();
+		
 		while (idVertice != raices[idVertice])
-			for (int i = 0; i < raices.length; i++) {
-				System.out.print(raices[i]);
-
-			}
-		idVertice = raices[idVertice];
+			idVertice = raices[idVertice];
 
 		return idVertice;
 	}

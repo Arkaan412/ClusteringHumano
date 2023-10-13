@@ -1,4 +1,4 @@
-package modelo;
+package grafo;
 
 import java.util.Objects;
 
