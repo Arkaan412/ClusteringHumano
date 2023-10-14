@@ -1,11 +1,7 @@
-package modelo;
+package grafo;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import grafo.Arista;
-import grafo.Grafo;
-import grafo.Vertice;
 
 public class Prim<T> {
 	Grafo<T> grafoG;
@@ -17,7 +13,7 @@ public class Prim<T> {
 		agmT = new Grafo<>();
 	}
 
-	public void generarAGM(Grafo<T> grafoG) {
+	public void generarAGM() {
 		if (grafoG.estaVacio())
 			throw new IllegalArgumentException("El grafo G no tiene vértices.");
 		if (!grafoG.esConexo())

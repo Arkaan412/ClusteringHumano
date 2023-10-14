@@ -5,7 +5,7 @@ import java.util.List;
 
 import grafo.BFS;
 import grafo.Grafo;
-import grafo.Kruskal;
+import grafo.Prim;
 import grafo.Vertice;
 
 public class GeneradorDeGruposDePersonas {
@@ -44,9 +44,11 @@ public class GeneradorDeGruposDePersonas {
 	}
 
 	private void generarAGM() {
-		Kruskal<Persona> kruskal = new Kruskal<>(grafo);
+		Prim<Persona> prim = new Prim<>(grafo);
 
-		agm = kruskal.obtenerAGM();
+		prim.generarAGM();
+
+		agm = prim.obtenerAGM();
 	}
 
 	private void obtenerGruposDelGrafo() {
