@@ -54,6 +54,7 @@ public class GeneradorDeGruposDePersonas {
 
 		int indiceVerticeInicial = 0;
 
+//		System.out.println(grafo.obtenerVertices());
 		List<Vertice<Persona>> grupoA = BFS.bfs(grafo, vertices.get(indiceVerticeInicial));
 
 		for (int i = 0; i < vertices.size(); i++) {

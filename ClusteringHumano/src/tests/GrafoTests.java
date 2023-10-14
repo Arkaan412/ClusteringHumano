@@ -5,6 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -280,6 +283,77 @@ class GrafoTests {
 	}
 
 	@Test
+	void obtenerAristasDeVerticeSinVecinosTest() {
+		grafo.agregarVertice(vertice0);
+		grafo.agregarVertice(vertice1);
+		grafo.agregarVertice(vertice2);
+		grafo.agregarVertice(vertice3);
+		
+		List<Arista<Integer>> aristasDe0 = grafo.obtenerAristasDeVertice(vertice0);
+		
+		int cantidadDeAristasDe0 = aristasDe0.size();
+		
+		assertEquals(0, cantidadDeAristasDe0);
+	}
+	
+	@Test
+	void obtenerAristasDeVerticeTest() {
+		grafo.agregarVertice(vertice0);
+		grafo.agregarVertice(vertice1);
+		grafo.agregarVertice(vertice2);
+		grafo.agregarVertice(vertice3);
+		
+		grafo.agregarArista(vertice0, vertice1);
+		grafo.agregarArista(vertice0, vertice2);
+		grafo.agregarArista(vertice0, vertice3);
+		
+		List<Arista<Integer>> aristasEsperadas = new ArrayList<>();
+		
+		aristasEsperadas.add(new Arista<Integer>(vertice0, vertice1));
+		aristasEsperadas.add(new Arista<Integer>(vertice0, vertice2));
+		aristasEsperadas.add(new Arista<Integer>(vertice0, vertice3));
+		
+		List<Arista<Integer>> aristasDe0 = grafo.obtenerAristasDeVertice(vertice0);
+		
+		int cantidadDeAristasDe0 = aristasDe0.size();
+		
+		boolean sonIguales = Asserts.compararColecciones(aristasEsperadas, aristasDe0);
+		
+		assertEquals(3, cantidadDeAristasDe0);
+		assertTrue(sonIguales);
+	}
+	
+	@Test
+	void obtenerAristasDeVerticeEnGrafoCompletoTest() {
+		grafo.agregarVertice(vertice0);
+		grafo.agregarVertice(vertice1);
+		grafo.agregarVertice(vertice2);
+		grafo.agregarVertice(vertice3);
+
+		grafo.agregarArista(vertice0, vertice1);
+		grafo.agregarArista(vertice0, vertice2);
+		grafo.agregarArista(vertice0, vertice3);
+		grafo.agregarArista(vertice1, vertice2);
+		grafo.agregarArista(vertice1, vertice3);
+		grafo.agregarArista(vertice2, vertice3);
+
+		List<Arista<Integer>> aristasEsperadas = new ArrayList<>();
+
+		aristasEsperadas.add(new Arista<Integer>(vertice0, vertice1));
+		aristasEsperadas.add(new Arista<Integer>(vertice0, vertice2));
+		aristasEsperadas.add(new Arista<Integer>(vertice0, vertice3));
+		
+		List<Arista<Integer>> aristasDe0 = grafo.obtenerAristasDeVertice(vertice0);
+
+		int cantidadDeAristasDe0 = aristasDe0.size();
+
+		boolean sonIguales = Asserts.compararColecciones(aristasEsperadas, aristasDe0);
+
+		assertEquals(3, cantidadDeAristasDe0);
+		assertTrue(sonIguales);
+	}
+
+	@Test
 	void eliminarVerticeTest() {
 		grafo.agregarVertice(vertice0);
 
@@ -319,6 +393,24 @@ class GrafoTests {
 
 		assertFalse(grafo.existeArista(arista01));
 		assertFalse(grafo.existeArista(arista02));
+	}
+
+	@Test
+	void eliminarTodosLosVerticesBorrasTodasLasAristasTest() {
+		grafo.agregarVertice(vertice0);
+		grafo.agregarVertice(vertice1);
+		grafo.agregarVertice(vertice2);
+		grafo.agregarVertice(vertice3);
+
+		grafo.eliminarVertice(vertice0);
+		grafo.eliminarVertice(vertice1);
+		grafo.eliminarVertice(vertice2);
+		grafo.eliminarVertice(vertice3);
+
+		int cantidadDeAristas = grafo.obtenerAristas().size();
+
+		assertEquals(0, cantidadDeAristas);
+		assertTrue(grafo.estaVacio());
 	}
 
 	@Test
@@ -602,23 +694,5 @@ class GrafoTests {
 		grafo.convertirAGrafoCompleto();
 
 		assertTrue(grafo.esCompleto());
-	}
-
-	@Test
-	void eliminartAristasLuegoDeBorrarTodosLosVerticesTest() {
-		grafo.agregarVertice(vertice0);
-		grafo.agregarVertice(vertice1);
-		grafo.agregarVertice(vertice2);
-		grafo.agregarVertice(vertice3);
-
-		grafo.eliminarVertice(vertice0);
-		grafo.eliminarVertice(vertice1);
-		grafo.eliminarVertice(vertice2);
-		grafo.eliminarVertice(vertice3);
-
-		int cantidadDeAristas = grafo.obtenerAristas().size();
-
-		assertEquals(0, cantidadDeAristas);
-		assertTrue(grafo.estaVacio());
 	}
 }

@@ -184,6 +184,18 @@ public class Grafo<T> {
 		obtenerVecinos(verticeB).remove(verticeA);
 	}
 
+	public List<Arista<T>> obtenerAristasDeVertice(Vertice<T> verticeA) {
+		List<Vertice<T>> vecinosDeA = obtenerVecinos(verticeA);
+	
+		List<Arista<T>> aristasDeA = new ArrayList<>();
+	
+		for (Vertice<T> vecinoActual : vecinosDeA) {
+			aristasDeA.add(obtenerArista(verticeA, vecinoActual));
+		}
+	
+		return aristasDeA;
+	}
+
 	public int tamanio() {
 		return vertices.size();
 	}

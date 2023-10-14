@@ -14,6 +14,7 @@ public class GrafoPersonasSolver {
 
 		grafo.convertirAGrafoCompleto();
 
+		System.out.println(grafo.obtenerAristas());
 		return grafo;
 	}
 
@@ -27,8 +28,10 @@ public class GrafoPersonasSolver {
 
 	public static void eliminarAristaDeMayorPeso(Grafo<Persona> grafo) {
 		Arista<Persona> aristaDeMayorPeso = obtenerAristaDeMayorPeso(grafo);
-
+		
+		System.out.println(grafo.obtenerAristas());
 		grafo.eliminarArista(aristaDeMayorPeso);
+		System.out.println(grafo.obtenerAristas());
 	}
 
 	private static Arista<Persona> obtenerAristaDeMayorPeso(Grafo<Persona> grafo) {
@@ -44,7 +47,23 @@ public class GrafoPersonasSolver {
 			if (pesoAristaActual > pesoAristaMayor)
 				aristaDeMayorPeso = aristaActual;
 		}
-
+		System.out.println(aristaDeMayorPeso);
 		return aristaDeMayorPeso;
+	}
+	
+	public Grafo<Persona> formarGrafoAPartirDeAristas(List<Arista<Persona>> aristas) {
+		Grafo<Persona> grafo = new Grafo<>();
+		
+		for (Arista<Persona> aristaActual : aristas) {
+			Vertice<Persona> verticeA = aristaActual.getVerticeA();
+			Vertice<Persona> verticeB = aristaActual.getVerticeB();
+			
+			grafo.agregarVertice(verticeA);
+			grafo.agregarVertice(verticeB);
+			
+			grafo.agregarArista(aristaActual);
+		}
+		
+		return grafo;
 	}
 }

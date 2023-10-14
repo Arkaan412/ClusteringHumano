@@ -70,6 +70,6 @@ public class Arista<T> {
 
 	@Override
 	public String toString() {
-		return "Arista [vA=" + verticeA + ", vB=" + verticeB + "]";
+		return "Arista [vA=" + verticeA + ", vB=" + verticeB + ", c=" + carga + "]";
 	}
 }
