@@ -31,7 +31,7 @@ public class Persona {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, interesCiencia, interesDeportes, interesEspectaculos, interesMusica, nombre);
+		return Objects.hash(nombre, interesDeportes, interesEspectaculos, interesCiencia, interesMusica, id);
 	}
 
 	@Override

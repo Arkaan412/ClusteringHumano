@@ -354,6 +354,44 @@ class GrafoTests {
 	}
 
 	@Test
+	void eliminarAristaBorraLosVecinosCorrespondientesTest() {
+		grafo.agregarVertice(vertice0);
+		grafo.agregarVertice(vertice1);
+		grafo.agregarVertice(vertice2);
+		grafo.agregarVertice(vertice3);
+				
+		grafo.agregarArista(vertice0, vertice3);
+		grafo.agregarArista(vertice1, vertice3);
+		grafo.agregarArista(vertice2, vertice3);
+		
+		Arista<Integer> arista13 = new Arista<>(vertice1, vertice3);
+		
+		grafo.eliminarArista(arista13);
+		
+		assertFalse(grafo.sonVecinos(vertice1, vertice3));
+	}
+	
+	@Test
+	void eliminarAristaMedianteUnaInstanciaDeAristaBorraLosVecinosCorrespondientesTest() {
+		grafo.agregarVertice(vertice0);
+		grafo.agregarVertice(vertice1);
+		grafo.agregarVertice(vertice2);
+		grafo.agregarVertice(vertice3);
+
+		Arista<Integer> arista01 = new Arista<>(vertice0, vertice1);
+		Arista<Integer> arista02 = new Arista<>(vertice0, vertice2);
+		Arista<Integer> arista03 = new Arista<>(vertice0, vertice3);
+
+		grafo.agregarArista(arista01);
+		grafo.agregarArista(arista02);
+		grafo.agregarArista(arista03);
+		
+		grafo.eliminarArista(arista01);
+		
+		assertFalse(grafo.sonVecinos(vertice0, vertice1));
+	}
+
+	@Test
 	void eliminarVerticeTest() {
 		grafo.agregarVertice(vertice0);
 
@@ -396,7 +434,7 @@ class GrafoTests {
 	}
 
 	@Test
-	void eliminarTodosLosVerticesBorrasTodasLasAristasTest() {
+	void eliminarTodosLosVerticesBorraTodasLasAristasTest() {
 		grafo.agregarVertice(vertice0);
 		grafo.agregarVertice(vertice1);
 		grafo.agregarVertice(vertice2);
@@ -412,7 +450,7 @@ class GrafoTests {
 		assertEquals(0, cantidadDeAristas);
 		assertTrue(grafo.estaVacio());
 	}
-
+	
 	@Test
 	void grafoVacioNoEsConexoTest() {
 		assertFalse(grafo.esConexo());

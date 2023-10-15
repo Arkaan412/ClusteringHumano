@@ -134,4 +134,52 @@ class BFSTests {
 
 		assertTrue(sonIguales);
 	}
+	
+	@Test
+	void bfsEnArbolTest() {
+		grafo.agregarVertice(vertice0);
+		grafo.agregarVertice(vertice1);
+		grafo.agregarVertice(vertice2);
+		grafo.agregarVertice(vertice3);
+		
+		grafo.agregarArista(vertice0, vertice3);
+		grafo.agregarArista(vertice1, vertice3);
+		grafo.agregarArista(vertice2, vertice3);
+		
+		ArrayList<Vertice<Integer>> verticesVisitadosEsperados = new ArrayList<Vertice<Integer>>();
+		
+		verticesVisitadosEsperados.add(vertice0);
+		verticesVisitadosEsperados.add(vertice1);
+		verticesVisitadosEsperados.add(vertice2);
+		verticesVisitadosEsperados.add(vertice3);
+		
+		List<Vertice<Integer>> verticesVisitados = BFS.bfs(grafo, vertice0);
+		
+		boolean sonIguales = Asserts.compararColecciones(verticesVisitados, verticesVisitadosEsperados);
+		
+		assertTrue(sonIguales);
+	}
+	
+	@Test
+	void bfsEnArbolSinArbolSinArista13Test() {
+		grafo.agregarVertice(vertice0);
+		grafo.agregarVertice(vertice1);
+		grafo.agregarVertice(vertice2);
+		grafo.agregarVertice(vertice3);
+
+		grafo.agregarArista(vertice0, vertice3);
+		grafo.agregarArista(vertice2, vertice3);
+
+		ArrayList<Vertice<Integer>> verticesVisitadosEsperados = new ArrayList<Vertice<Integer>>();
+
+		verticesVisitadosEsperados.add(vertice0);
+		verticesVisitadosEsperados.add(vertice2);
+		verticesVisitadosEsperados.add(vertice3);
+
+		List<Vertice<Integer>> verticesVisitados = BFS.bfs(grafo, vertice0);
+
+		boolean sonIguales = Asserts.compararColecciones(verticesVisitados, verticesVisitadosEsperados);
+
+		assertTrue(sonIguales);
+	}
 }

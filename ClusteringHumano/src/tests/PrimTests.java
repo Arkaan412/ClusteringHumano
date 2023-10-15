@@ -67,22 +67,63 @@ class PrimTests {
 		grafo.agregarVertice(vertice2);
 		grafo.agregarVertice(vertice3);
 		grafo.agregarVertice(vertice4);
-
+		
 		Arista<Integer> arista01 = new Arista<>(vertice0, vertice1, 6);
 		Arista<Integer> arista02 = new Arista<>(vertice0, vertice2, 5);
 		Arista<Integer> arista03 = new Arista<>(vertice0, vertice3, 3);
 		Arista<Integer> arista12 = new Arista<>(vertice1, vertice2, 7);
 		Arista<Integer> arista13 = new Arista<>(vertice1, vertice3, 5);
 		Arista<Integer> arista23 = new Arista<>(vertice2, vertice3, 5);
-
+		
 		grafo.agregarArista(arista01);
 		grafo.agregarArista(arista02);
 		grafo.agregarArista(arista03);
 		grafo.agregarArista(arista12);
 		grafo.agregarArista(arista13);
 		grafo.agregarArista(arista23);
-
+		
 		assertThrows(IllegalArgumentException.class, () -> prim.generarAGM());
+	}
+	
+	@Test
+	void asdTest() {
+		grafo.agregarVertice(vertice0);
+		grafo.agregarVertice(vertice1);
+		grafo.agregarVertice(vertice2);
+		grafo.agregarVertice(vertice3);
+
+		Arista<Integer> arista01 = new Arista<>(vertice0, vertice1, 0);
+		Arista<Integer> arista12 = new Arista<>(vertice1, vertice2, 20);
+		Arista<Integer> arista13 = new Arista<>(vertice1, vertice3, 20);
+		Arista<Integer> arista23 = new Arista<>(vertice2, vertice3, 0);
+		Arista<Integer> arista03 = new Arista<>(vertice0, vertice3, 20);
+		Arista<Integer> arista02 = new Arista<>(vertice0, vertice2, 20);
+
+		grafo.agregarArista(arista01);
+		grafo.agregarArista(arista12);
+		grafo.agregarArista(arista13);
+		grafo.agregarArista(arista23);
+		grafo.agregarArista(arista03);
+		grafo.agregarArista(arista02);
+
+//		List<Arista<Integer>> aristasEsperadas = new ArrayList<>();
+//
+//		aristasEsperadas.add(arista04);
+//		aristasEsperadas.add(arista34);
+//		aristasEsperadas.add(arista13);
+//		aristasEsperadas.add(arista02);
+
+		prim.generarAGM();
+
+		Grafo<Integer> agm = prim.obtenerAGM();
+
+		System.out.println(agm.obtenerAristas());
+//		List<Arista<Integer>> aristasObtenidas = agm.obtenerAristas();
+
+//		Asserts.compararColecciones(aristasEsperadas, aristasObtenidas);
+		
+		assertTrue(agm.esConexo());
+		assertTrue(agm.esArbol());
 	}
 
 	@Test

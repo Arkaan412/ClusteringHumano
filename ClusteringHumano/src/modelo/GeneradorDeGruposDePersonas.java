@@ -24,23 +24,21 @@ public class GeneradorDeGruposDePersonas {
 
 		generarAGM();
 
+//		System.out.println("GeneradorDeGruposDePersonasAntes");
+//		System.out.println(agm.obtenerAristas());	
 		GrafoPersonasSolver.eliminarAristaDeMayorPeso(agm);
+//		System.out.println("GeneradorDeGruposDePersonasdesps");
+//		System.out.println(agm.obtenerAristas());
 
 		obtenerGruposDelGrafo();
 	}
 
 	private void generarGrafo(ArrayList<Object[]> datosDePersonas) {
+		if (datosDePersonas.size() < 2) throw new IllegalArgumentException("Debe ingresar al menos dos personas");
+		
 		List<Persona> personas = InterpreteDeDatosDePersonas.generarPersonas(datosDePersonas);
 
 		grafo = GrafoPersonasSolver.generarGrafo(personas);
-		
-//		ArrayList<Vertice<Persona>> vertices = new ArrayList<>(grafo.obtenerVertices());
-//
-//		for (int i = 0; i < vertices.size(); i++) {
-//			Vertice<Persona> verticeActual = vertices.get(i);
-//
-//			System.out.println(verticeActual);
-//		}
 	}
 
 	private void generarAGM() {
@@ -52,25 +50,42 @@ public class GeneradorDeGruposDePersonas {
 	}
 
 	private void obtenerGruposDelGrafo() {
-		List<Vertice<Persona>> vertices = grafo.obtenerVertices();
+		List<Vertice<Persona>> vertices = agm.obtenerVertices();
 
 		int indiceVerticeInicial = 0;
 
-//		System.out.println(grafo.obtenerVertices());
-		List<Vertice<Persona>> grupoA = BFS.bfs(grafo, vertices.get(indiceVerticeInicial));
+//		System.out.println("obtenerGruposDelGrafo");
+//		System.out.println(grafo.obtenerAristas());
+		System.out.println();
+		System.out.println("agm.obtenerAristas()");
+		System.out.println(agm.obtenerAristas());
+		System.out.println();
+//		System.out.println("obtenerGruposDelGrafo");
+//		System.out.println(vertices.get(indiceVerticeInicial));
+		
+		List<Vertice<Persona>> grupoA = BFS.bfs(agm, vertices.get(indiceVerticeInicial));
+		System.out.println("Grupo A");
+		System.out.println(grupoA);
 
 		for (int i = 0; i < vertices.size(); i++) {
 			Vertice<Persona> verticeActual = vertices.get(i);
 
-			boolean estaEnElGrupoA = vertices.contains(verticeActual);
+			boolean estaEnElGrupoA = grupoA.contains(verticeActual);
 
 			if (!estaEnElGrupoA) {
+				System.out.println("!estaEnElGrupoA");
+				System.out.println(i);
+				System.out.println(vertices.get(i).getId());
 				indiceVerticeInicial = i;
 				break;
 			}
+			System.out.println("verticesEnA");
+			System.out.println(vertices.get(i).getId());
 		}
 
-		List<Vertice<Persona>> grupoB = BFS.bfs(grafo, vertices.get(indiceVerticeInicial));
+		List<Vertice<Persona>> grupoB = BFS.bfs(agm, vertices.get(indiceVerticeInicial));
+		System.out.println("Grupo B");
+		System.out.println(grupoB);
 
 		generarGrupos(grupoA, grupoB);
 	}

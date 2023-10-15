@@ -26,12 +26,66 @@ public class GrafoPersonasSolver {
 		}
 	}
 
+	private static void convertirAGrafoCompleto(Grafo<Persona> grafo) {
+		List<Vertice<Persona>> vertices = grafo.obtenerVertices();
+
+		for (Vertice<Persona> verticeActual : vertices) {
+			for (Vertice<Persona> vecinoAAgregar : vertices) {
+				boolean aristaEsValida = !grafo.sonElMismoVertice(verticeActual, vecinoAAgregar)
+						&& !grafo.sonVecinos(verticeActual, vecinoAAgregar);
+
+				if (aristaEsValida) {
+					Persona personaA = verticeActual.getCarga();
+					Persona personaB = vecinoAAgregar.getCarga();
+
+					int indiceDeSimilaridad = calcularIndiceDeSimilaridad(personaA, personaB);
+					System.out.println("indice entre " + personaA + " y " + personaB + " = " + indiceDeSimilaridad);
+					grafo.agregarArista(verticeActual, vecinoAAgregar, indiceDeSimilaridad);
+				}
+			}
+		}
+	}
+
+	public static int calcularIndiceDeSimilaridad(Persona personaA, Persona personaB) {
+		int interesDeportesDeA = personaA.getInteresDeportes();
+		int interesEspectaculosDeA = personaA.getInteresEspectaculos();
+		int interesCienciaDeA = personaA.getInteresCiencia();
+		int interesMusicaDeA = personaA.getInteresMusica();
+
+		int interesDeportesDeB = personaB.getInteresDeportes();
+		int interesEspectaculosDeB = personaB.getInteresEspectaculos();
+		int interesCienciaDeB = personaB.getInteresCiencia();
+		int interesMusicaDeB = personaB.getInteresMusica();
+
+		int indiceDeSimilaridad = Math.abs(interesDeportesDeA - interesDeportesDeB)
+				+ Math.abs(interesEspectaculosDeA - interesEspectaculosDeB)
+				+ Math.abs(interesCienciaDeA - interesCienciaDeB)
+				+ Math.abs(interesMusicaDeA - interesMusicaDeB);
+
+		return indiceDeSimilaridad;
+	}
+
 	public static void eliminarAristaDeMayorPeso(Grafo<Persona> grafo) {
+//		System.out.println("eliminarAristaDeMayorPeso");
+
 		Arista<Persona> aristaDeMayorPeso = obtenerAristaDeMayorPeso(grafo);
 
-		System.out.println(grafo.obtenerAristas());
+//		System.out.println("ANTES");
+//		System.out.println(grafo.obtenerAristas());
 		grafo.eliminarArista(aristaDeMayorPeso);
-		System.out.println(grafo.obtenerAristas());
+//		System.out.println("DESPUES");
+//		System.out.println(grafo.obtenerAristas());
+//		System.out.println("eliminarAristaDeMayorPesoEND");
+//		
+//		System.out.println();
+//		
+//		System.out.println(aristaDeMayorPeso.getVerticeA());
+//		System.out.println(grafo.obtenerVecinos(aristaDeMayorPeso.getVerticeA()));
+//		System.out.println(aristaDeMayorPeso.getVerticeB());
+//		System.out.println(grafo.obtenerVecinos(aristaDeMayorPeso.getVerticeB()));
+//		System.out.println(grafo.sonVecinos(aristaDeMayorPeso.getVerticeA(), aristaDeMayorPeso.getVerticeB()));
+//		
+//		System.out.println();
 	}
 
 	private static Arista<Persona> obtenerAristaDeMayorPeso(Grafo<Persona> grafo) {
@@ -49,61 +103,5 @@ public class GrafoPersonasSolver {
 		}
 		System.out.println("aristaDeMayorPeso = " + aristaDeMayorPeso);
 		return aristaDeMayorPeso;
-	}
-
-	public Grafo<Persona> formarGrafoAPartirDeAristas(List<Arista<Persona>> aristas) {
-		Grafo<Persona> grafo = new Grafo<>();
-
-		for (Arista<Persona> aristaActual : aristas) {
-			Vertice<Persona> verticeA = aristaActual.getVerticeA();
-			Vertice<Persona> verticeB = aristaActual.getVerticeB();
-
-			grafo.agregarVertice(verticeA);
-			grafo.agregarVertice(verticeB);
-
-			grafo.agregarArista(aristaActual);
-		}
-
-		return grafo;
-	}
-
-	public static void convertirAGrafoCompleto(Grafo<Persona> grafo) {
-		List<Vertice<Persona>> vertices = grafo.obtenerVertices();
-
-		for (Vertice<Persona> verticeActual : vertices) {
-			for (Vertice<Persona> vecinoAAgregar : vertices) {
-				boolean aristaEsValida = !grafo.sonElMismoVertice(verticeActual, vecinoAAgregar)
-						&& !grafo.sonVecinos(verticeActual, vecinoAAgregar);
-
-				if (aristaEsValida) {
-					Persona personaA = verticeActual.getCarga();
-					Persona personaB = vecinoAAgregar.getCarga();
-
-					int indiceDeSimilaridad = calcularIndiceDeSimilaridad(personaA, personaB);
-
-					grafo.agregarArista(verticeActual, vecinoAAgregar, indiceDeSimilaridad);
-				}
-			}
-		}
-	}
-
-	// Va en clase Persona
-	public static int calcularIndiceDeSimilaridad(Persona personaA, Persona personaB) {
-		int interesDeportesDeA = personaA.getInteresDeportes();
-		int interesMusicaDeA = personaA.getInteresMusica();
-		int interesEspectaculosDeA = personaA.getInteresEspectaculos();
-		int interesCienciaDeA = personaA.getInteresCiencia();
-
-		int interesDeportesDeB = personaB.getInteresDeportes();
-		int interesMusicaDeB = personaB.getInteresMusica();
-		int interesEspectaculosDeB = personaB.getInteresEspectaculos();
-		int interesCienciaDeB = personaB.getInteresCiencia();
-
-		int indiceDeSimilaridad = Math.abs(interesDeportesDeA - interesDeportesDeB)
-				+ Math.abs(interesMusicaDeA - interesMusicaDeB)
-				+ Math.abs(interesEspectaculosDeA - interesEspectaculosDeB)
-				+ Math.abs(interesCienciaDeA - interesCienciaDeB);
-
-		return indiceDeSimilaridad;
 	}
 }

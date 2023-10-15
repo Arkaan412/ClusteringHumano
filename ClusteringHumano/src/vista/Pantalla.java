@@ -13,7 +13,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JButton;
 
 import java.awt.EventQueue;
-import java.awt.Rectangle;
 import javax.swing.JPanel;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -25,20 +24,19 @@ public class Pantalla {
 	private JFrame frame;
 	private JTable tablaPersonas;
 	private JTable tablaResultados;
-	
-	private int cantidadFilas;
-	private int cantidadColumnas;
-	
+
+	private static final int cantidadFilas = 10;
+//	private static final int cantidadColumnas = 5;
+
 	private static final int columnaDePersonas = 0;
-	
+
 	private static final int columnaDeInteresDeportes = 1;
-	private static final int columnaDeInteresMusica = 2;
-	private static final int columnaDeInteresEspectaculos = 3;
-	private static final int columnaDeInteresCiencia = 4;
-	
+	private static final int columnaDeInteresEspectaculos = 2;
+	private static final int columnaDeInteresCiencia = 3;
+	private static final int columnaDeInteresMusica = 4;
+
 	private static final int columnaDeGrupoA = 0;
 	private static final int columnaDeGrupoB = 1;
-	
 
 	/**
 	 * Launch the application.
@@ -46,7 +44,7 @@ public class Pantalla {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try { 
+				try {
 					Pantalla window = new Pantalla();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -57,158 +55,136 @@ public class Pantalla {
 	}
 
 	public Pantalla() {
-		this.cantidadFilas = 26;
-		this.cantidadColumnas = 5;
-
 		initialize();
 	}
 
-	@SuppressWarnings("serial")
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 600, 500); // Mas grande?. NO resizeable
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 600, 450);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		frame.setLocationRelativeTo(null); // Centrar en pantalla.
-		
+
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 584, 461);
 		frame.getContentPane().add(tabbedPane);
-		
+
 		JPanel panel = new JPanel();
-		tabbedPane.addTab("Personas y gustos", null, panel, "Personas y gustos");
-		
 		panel.setLayout(null);
+
+		tabbedPane.addTab("Personas y gustos", null, panel, "Personas y gustos");
+
 		JScrollPane scrollPanePersonas = new JScrollPane();
-		scrollPanePersonas.setBounds(0, 0, 579, 353);
+		scrollPanePersonas.setBounds(0, 0, 579, 305);
 		panel.add(scrollPanePersonas);
-				
-				
-		tablaPersonas = new JTable();
+
+		inicializarTablaPersonas();
+
 		scrollPanePersonas.setViewportView(tablaPersonas);
-		tablaPersonas.setCellSelectionEnabled(true);
-		tablaPersonas.setColumnSelectionAllowed(true);
-		
-				tablaPersonas.setFillsViewportHeight(true);
-				tablaPersonas.setModel(new DefaultTableModel(
-					new Object[][] {
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-						{"", 0, 0, 0, 0},
-					},
-					new String[] {
-						"Personas", " Deportes", " Noticias del espectáculo", " Ciencia", " Música"
-					}
-				) {
-					Class[] columnTypes = new Class[] {
-						String.class, Integer.class, Integer.class, Integer.class, Integer.class
-					};
-					public Class getColumnClass(int columnIndex) {
-						return columnTypes[columnIndex];
-					}
-				});
-				tablaPersonas.getColumnModel().getColumn(0).setResizable(false);
-				tablaPersonas.getColumnModel().getColumn(0).setPreferredWidth(160);
-				tablaPersonas.getColumnModel().getColumn(1).setPreferredWidth(130);
-				tablaPersonas.getColumnModel().getColumn(2).setPreferredWidth(200);
-				tablaPersonas.getColumnModel().getColumn(3).setPreferredWidth(115);
-				tablaPersonas.getColumnModel().getColumn(4).setPreferredWidth(115);
-			
+
 		JButton botonGenerar = new JButton("Generar grupos");
 		botonGenerar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				generarGrupos();
 			}
 		});
-		botonGenerar.setBounds(new Rectangle(11, 110, 111, 111));
-		botonGenerar.setBounds(0, 353, 579, 80);
+
+		botonGenerar.setBounds(0, 307, 579, 80);
 		panel.add(botonGenerar);
-		
-		JScrollPane scrollPaneResultados= new JScrollPane();
+
+		JScrollPane scrollPaneResultados = new JScrollPane();
 		tabbedPane.addTab("Resultados", null, scrollPaneResultados, "Resultados");
 
+		inicializarTablaResultados();
+
+		scrollPaneResultados.setViewportView(tablaResultados);
+	}
+
+	private void inicializarTablaPersonas() {
+		tablaPersonas = new JTable();
+
+		tablaPersonas.setCellSelectionEnabled(true);
+		tablaPersonas.setColumnSelectionAllowed(true);
+		tablaPersonas.setFillsViewportHeight(true);
+
+		DefaultTableModel tableModelPersonas = inicializarTableModelPersonas();
+		tablaPersonas.setModel(tableModelPersonas);
+
+		tablaPersonas.getColumnModel().getColumn(0).setPreferredWidth(160);
+		tablaPersonas.getColumnModel().getColumn(1).setPreferredWidth(130);
+		tablaPersonas.getColumnModel().getColumn(2).setPreferredWidth(200);
+		tablaPersonas.getColumnModel().getColumn(3).setPreferredWidth(115);
+		tablaPersonas.getColumnModel().getColumn(4).setPreferredWidth(115);
+	}
+
+	private DefaultTableModel inicializarTableModelPersonas() {
+		DefaultTableModel tableModel = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				if (columnIndex == 0) {
+					return String.class;
+				} else {
+					return Integer.class;
+				}
+			}
+		};
+		tableModel.addColumn("Personas");
+		tableModel.addColumn("Deportes");
+		tableModel.addColumn("Noticias del espectáculo");
+		tableModel.addColumn("Ciencia");
+		tableModel.addColumn("Música");
+
+		for (int i = 0; i < cantidadFilas; i++) {
+			tableModel.addRow(new Object[] { "", 0, 0, 0, 0 });
+		}
+		return tableModel;
+	}
+
+	private void inicializarTablaResultados() {
 		tablaResultados = new JTable();
+
 		tablaResultados.setColumnSelectionAllowed(true);
 		tablaResultados.setCellSelectionEnabled(true);
 		tablaResultados.setFillsViewportHeight(true);
-		tablaResultados.setModel(new DefaultTableModel(
-			new String[][] {
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-				{"", ""},
-			},
-			new String[] {
-				"Grupo 1", "Grupo 2"
-			}
-		) {
-			Class<?>[] columnTypes = new Class[] {
-				String.class, String.class
-			};
-			public Class<?> getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
+
+		DefaultTableModel tableModelResultados = inicializarTableModelResultados();
+		tablaResultados.setModel(tableModelResultados);
+
 		tablaResultados.getColumnModel().getColumn(0).setPreferredWidth(362);
 		tablaResultados.getColumnModel().getColumn(1).setPreferredWidth(362);
-		
-		scrollPaneResultados.setViewportView(tablaResultados);
+	}
+
+	private DefaultTableModel inicializarTableModelResultados() {
+		DefaultTableModel tableModel = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				return String.class;
+			}
+		};
+
+		tableModel.addColumn("Grupo A");
+		tableModel.addColumn("Grupo B");
+
+		for (int i = 0; i < cantidadFilas; i++) {
+			tableModel.addRow(new Object[] { "", "" });
+		}
+		return tableModel;
 	}
 
 	private void generarGrupos() {
 		System.out.println(1);
 		ArrayList<Object[]> datosDePersonas = obtenerDatosDePersonas();
 		System.out.println(2);
-		
+
 		GeneradorDeGruposDePersonas gruposDePersonas = Controlador.generarGruposDePersonas(datosDePersonas);
 		System.out.println(3);
-		
+
 		cargarResultados(gruposDePersonas);
 		System.out.println(4);
 	}
@@ -220,18 +196,9 @@ public class Pantalla {
 			String stringDeFilaActual = (String) tablaPersonas.getValueAt(i, columnaDePersonas);
 
 			boolean esStringVacio = stringDeFilaActual.equals("");
-
 			if (!esStringVacio) {
 
-				String nombre = stringDeFilaActual;
-
-				Integer interesDeportes = (Integer) tablaPersonas.getValueAt(i, columnaDeInteresDeportes);
-				Integer interesMusica = (Integer) tablaPersonas.getValueAt(i, columnaDeInteresMusica);
-				Integer interesEspectaculos = (Integer) tablaPersonas.getValueAt(i, columnaDeInteresEspectaculos);
-				Integer interesCiencia = (Integer) tablaPersonas.getValueAt(i, columnaDeInteresCiencia);
-
-				Object[] datosDePersona = { nombre, interesDeportes, interesMusica, interesEspectaculos,
-						interesCiencia };
+				Object[] datosDePersona = obtenerDatosDePersona(i, stringDeFilaActual);
 
 				datosDePersonas.add(datosDePersona);
 			}
@@ -240,10 +207,23 @@ public class Pantalla {
 		return datosDePersonas;
 	}
 
+	private Object[] obtenerDatosDePersona(int filaActual, String nombreDeLaFilaActual) {
+		String nombre = nombreDeLaFilaActual;
+
+		Integer interesDeportes = (Integer) tablaPersonas.getValueAt(filaActual, columnaDeInteresDeportes);
+		Integer interesEspectaculos = (Integer) tablaPersonas.getValueAt(filaActual, columnaDeInteresEspectaculos);
+		Integer interesCiencia = (Integer) tablaPersonas.getValueAt(filaActual, columnaDeInteresCiencia);
+		Integer interesMusica = (Integer) tablaPersonas.getValueAt(filaActual, columnaDeInteresMusica);
+
+		Object[] datosDePersona = { nombre, interesDeportes, interesEspectaculos, interesCiencia, interesMusica };
+
+		return datosDePersona;
+	}
+
 	private void cargarResultados(GeneradorDeGruposDePersonas gruposDePersonas) {
 		List<String> grupoA = gruposDePersonas.obtenerGrupoA();
 		List<String> grupoB = gruposDePersonas.obtenerGrupoB();
-		
+
 		cargarGrupoA(grupoA);
 		cargarGrupoB(grupoB);
 	}
@@ -251,17 +231,17 @@ public class Pantalla {
 	private void cargarGrupoA(List<String> grupoA) {
 		for (int i = 0; i < grupoA.size(); i++) {
 			String nombreActual = grupoA.get(i);
-			
+
 			tablaResultados.setValueAt(nombreActual, i, columnaDeGrupoA);
-		}		
+		}
 	}
 
 	private void cargarGrupoB(List<String> grupoB) {
 		for (int i = 0; i < grupoB.size(); i++) {
 			String nombreActual = grupoB.get(i);
-			
+
 			tablaResultados.setValueAt(nombreActual, i, columnaDeGrupoB);
-		}		
+		}
 	}
 
 	public void mostrar() {

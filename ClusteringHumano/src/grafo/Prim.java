@@ -22,12 +22,13 @@ public class Prim<T> {
 		List<Vertice<T>> verticesDeG = grafoG.obtenerVertices();
 		agmT.agregarVertice(verticesDeG.get(0));
 
-		System.out.println("Inicio");
-		System.out.println(agmT.obtenerVertices());
+//		System.out.println("Inicio");
+//		System.out.println(agmT.obtenerVertices());
 
 		while (agmT.tamanio() < grafoG.tamanio()) {
 			Arista<T> aristaMinima = obtenerAristaMinimaQueNoFormeCiclo();
-			System.out.println(aristaMinima);
+			
+//			System.out.println(aristaMinima);
 
 			Vertice<T> verticeA = aristaMinima.getVerticeA();
 			Vertice<T> verticeB = aristaMinima.getVerticeB();
@@ -35,12 +36,13 @@ public class Prim<T> {
 			agmT.agregarVertice(verticeB);
 
 			agmT.agregarArista(aristaMinima);
-			System.out.println(agmT.obtenerVertices());
+			System.out.println("vertices de t = " + agmT.obtenerVertices());
+//			System.out.println(agmT.obtenerVertices());
 		}
 
-		System.out.println("RESULTADO");
-		System.out.println(agmT.obtenerVertices());
-		System.out.println(agmT.obtenerAristas());
+//		System.out.println("RESULTADO");
+//		System.out.println(agmT.obtenerVertices());
+//		System.out.println(agmT.obtenerAristas());
 	}
 
 	public Grafo<T> obtenerAGM() {
@@ -49,24 +51,23 @@ public class Prim<T> {
 
 	private Arista<T> obtenerAristaMinimaQueNoFormeCiclo() {
 		List<Arista<T>> aristasDesdeGHaciaT = obtenerAristasDesdeGHaciaT();
-//		System.out.println("cont");
-//		System.out.println(aristasDesdeGHaciaT);
+		System.out.println("aristasDesdeGHaciaT");
+		System.out.println(aristasDesdeGHaciaT);
 
 		Arista<T> aristaMinima = aristasDesdeGHaciaT.get(0);
-		int cargaAristaMinima = aristaMinima.getCarga();
+		System.out.println("arista0 = " + aristaMinima);
 
 		for (Arista<T> aristaActual : aristasDesdeGHaciaT) {
+			int cargaAristaMinima = aristaMinima.getCarga();
 			int cargaAristaActual = aristaActual.getCarga();
 
-			if (aristaFormaCiclo(aristaMinima)) {
+			System.out.println("aristaActual = " + aristaActual);
+			if (cargaAristaActual <= cargaAristaMinima) {
+				System.out.println("cargaAristaActual <= cargaAristaMinima");
+				System.out.println("reemplazada " + aristaMinima + " por " + aristaActual);
 				aristaMinima = aristaActual;
-			} else {
-				if (!aristaFormaCiclo(aristaActual)) {
-					if (cargaAristaActual <= cargaAristaMinima) {
-						aristaMinima = aristaActual;
-					}
-				}
 			}
+			System.out.println();
 		}
 
 		return aristaMinima;
@@ -83,14 +84,14 @@ public class Prim<T> {
 			for (Arista<T> aristaActual : aristasDeVerticeActual) {
 				boolean existeAristaEnT = agmT.existeArista(aristaActual);
 
-				if (!existeAristaEnT) {
+				if (!existeAristaEnT && !aristaFormaCiclo(aristaActual)) {
 					aristasDesdeGHaciaT.add(aristaActual);
 				}
 			}
 		}
 
-		System.out.println("aristasDesdeGHaciaT");
-		System.out.println(aristasDesdeGHaciaT);
+//		System.out.println("aristasDesdeGHaciaT");
+//		System.out.println(aristasDesdeGHaciaT);
 		return aristasDesdeGHaciaT;
 	}
 
