@@ -6,7 +6,7 @@ import java.util.List;
 public class InterpreteDeDatosDePersonas {
 
 	public static List<Persona> generarPersonas(ArrayList<Object[]> datosDePersonas) {
-		if (datosDePersonas.isEmpty()) throw new IllegalArgumentException("No se ingresaron datos.");
+		if (datosDePersonas.isEmpty()) throw new IllegalArgumentException("No se ingresaron datos en un formato válido.");
 		
 		ArrayList<Persona> personas = new ArrayList<>();
 

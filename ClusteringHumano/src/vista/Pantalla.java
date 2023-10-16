@@ -6,7 +6,6 @@ import javax.swing.JTable;
 
 import javax.swing.table.DefaultTableModel;
 
-import controlador.Controlador;
 import modelo.GeneradorDeGruposDePersonas;
 
 import javax.swing.JTabbedPane;
@@ -182,7 +181,7 @@ public class Pantalla {
 		ArrayList<Object[]> datosDePersonas = obtenerDatosDePersonas();
 		System.out.println(2);
 
-		GeneradorDeGruposDePersonas gruposDePersonas = Controlador.generarGruposDePersonas(datosDePersonas);
+		GeneradorDeGruposDePersonas gruposDePersonas = new GeneradorDeGruposDePersonas(datosDePersonas);
 		System.out.println(3);
 
 		cargarResultados(gruposDePersonas);

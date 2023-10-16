@@ -14,7 +14,6 @@ public class GrafoPersonasSolver {
 
 		convertirAGrafoCompleto(grafo);
 
-		System.out.println(grafo.obtenerAristas());
 		return grafo;
 	}
 
@@ -39,7 +38,7 @@ public class GrafoPersonasSolver {
 					Persona personaB = vecinoAAgregar.getCarga();
 
 					int indiceDeSimilaridad = calcularIndiceDeSimilaridad(personaA, personaB);
-					System.out.println("indice entre " + personaA + " y " + personaB + " = " + indiceDeSimilaridad);
+
 					grafo.agregarArista(verticeActual, vecinoAAgregar, indiceDeSimilaridad);
 				}
 			}
@@ -66,26 +65,9 @@ public class GrafoPersonasSolver {
 	}
 
 	public static void eliminarAristaDeMayorPeso(Grafo<Persona> grafo) {
-//		System.out.println("eliminarAristaDeMayorPeso");
-
 		Arista<Persona> aristaDeMayorPeso = obtenerAristaDeMayorPeso(grafo);
 
-//		System.out.println("ANTES");
-//		System.out.println(grafo.obtenerAristas());
 		grafo.eliminarArista(aristaDeMayorPeso);
-//		System.out.println("DESPUES");
-//		System.out.println(grafo.obtenerAristas());
-//		System.out.println("eliminarAristaDeMayorPesoEND");
-//		
-//		System.out.println();
-//		
-//		System.out.println(aristaDeMayorPeso.getVerticeA());
-//		System.out.println(grafo.obtenerVecinos(aristaDeMayorPeso.getVerticeA()));
-//		System.out.println(aristaDeMayorPeso.getVerticeB());
-//		System.out.println(grafo.obtenerVecinos(aristaDeMayorPeso.getVerticeB()));
-//		System.out.println(grafo.sonVecinos(aristaDeMayorPeso.getVerticeA(), aristaDeMayorPeso.getVerticeB()));
-//		
-//		System.out.println();
 	}
 
 	private static Arista<Persona> obtenerAristaDeMayorPeso(Grafo<Persona> grafo) {
@@ -93,15 +75,15 @@ public class GrafoPersonasSolver {
 
 		Arista<Persona> aristaDeMayorPeso = aristas.get(0);
 
-		int pesoAristaMayor = aristaDeMayorPeso.getCarga();
-
 		for (Arista<Persona> aristaActual : aristas) {
+			int pesoAristaMayor = aristaDeMayorPeso.getCarga();
 			int pesoAristaActual = aristaActual.getCarga();
 
-			if (pesoAristaActual > pesoAristaMayor)
+			if (pesoAristaActual > pesoAristaMayor) {
 				aristaDeMayorPeso = aristaActual;
+			}
 		}
-		System.out.println("aristaDeMayorPeso = " + aristaDeMayorPeso);
+
 		return aristaDeMayorPeso;
 	}
 }
