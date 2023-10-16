@@ -3,20 +3,18 @@ package vista;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
 import javax.swing.table.DefaultTableModel;
-
-import modelo.GeneradorDeGruposDePersonas;
-
 import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
 import javax.swing.JButton;
 
-import java.awt.EventQueue;
-import javax.swing.JPanel;
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.event.ActionEvent;
+
+import modelo.GeneradorDeGruposDePersonas;
 
 public class Pantalla {
 
@@ -36,22 +34,6 @@ public class Pantalla {
 
 	private static final int columnaDeGrupoA = 0;
 	private static final int columnaDeGrupoB = 1;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Pantalla window = new Pantalla();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	public Pantalla() {
 		initialize();
@@ -177,15 +159,11 @@ public class Pantalla {
 	}
 
 	private void generarGrupos() {
-		System.out.println(1);
 		ArrayList<Object[]> datosDePersonas = obtenerDatosDePersonas();
-		System.out.println(2);
 
 		GeneradorDeGruposDePersonas gruposDePersonas = new GeneradorDeGruposDePersonas(datosDePersonas);
-		System.out.println(3);
 
 		cargarResultados(gruposDePersonas);
-		System.out.println(4);
 	}
 
 	private ArrayList<Object[]> obtenerDatosDePersonas() {

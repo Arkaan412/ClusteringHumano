@@ -149,23 +149,12 @@ public class Grafo<T> {
 
 	public void eliminarArista(Arista<T> arista) {
 		if (existeArista(arista)) {
-//			System.out.println();
-//			System.out.println("existe " + arista);
 			Vertice<T> verticeA = arista.getVerticeA();
 			Vertice<T> verticeB = arista.getVerticeB();
-//			System.out.println("A Y B");
-//			System.out.println(obtenerVecinos(verticeA));
-//			System.out.println(obtenerVecinos(verticeB));
-			
+
 			eliminarVecinos(verticeA, verticeB);
-			
-//			System.out.println(obtenerVecinos(verticeA));
-//			System.out.println(obtenerVecinos(verticeB));
-			
-//			System.out.println(sonVecinos(verticeA, verticeB));
-//			System.out.println("A Y B");
+
 			aristas.remove(arista);
-//			System.out.println();
 		}
 	}
 
@@ -191,34 +180,19 @@ public class Grafo<T> {
 	}
 
 	private void eliminarVecinos(Vertice<T> verticeA, Vertice<T> verticeB) {
-//		System.out.println();
-//		System.out.println(obtenerVecinos(verticeA));
-//		System.out.println(obtenerVecinos(verticeB));
-//		
-//		
-//		System.out.println("remove");
-//		obtenerVecinos(verticeA).remove(verticeB);
-//		obtenerVecinos(verticeB).remove(verticeA);
 		vertices.get(verticeA).remove(verticeB);
 		vertices.get(verticeB).remove(verticeA);
-		
-		
-//		obtenerVecinos(verticeA).remove(verticeB);
-//		obtenerVecinos(verticeB).remove(verticeA);
-//		System.out.println(obtenerVecinos(verticeA));
-//		System.out.println(obtenerVecinos(verticeB));
-//		System.out.println();
 	}
 
 	public List<Arista<T>> obtenerAristasDeVertice(Vertice<T> verticeA) {
 		List<Vertice<T>> vecinosDeA = obtenerVecinos(verticeA);
-	
+
 		List<Arista<T>> aristasDeA = new ArrayList<>();
-	
+
 		for (Vertice<T> vecinoActual : vecinosDeA) {
 			aristasDeA.add(obtenerArista(verticeA, vecinoActual));
 		}
-	
+
 		return aristasDeA;
 	}
 

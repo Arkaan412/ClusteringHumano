@@ -12,7 +12,7 @@ public class Main {
 					Pantalla pantalla = new Pantalla();
 
 					pantalla.mostrar();
-
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
