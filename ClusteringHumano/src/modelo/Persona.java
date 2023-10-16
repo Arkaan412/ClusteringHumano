@@ -2,9 +2,9 @@ package modelo;
 
 import java.util.Objects;
 
-public class Persona{
+public class Persona {
 	private static int siguienteID = 1;
-	
+
 	private String nombre;
 	private int id;
 
@@ -15,9 +15,9 @@ public class Persona{
 
 	public Persona(String nombre, int interesDeportes, int interesEspectaculos, int interesCiencia, int interesMusica) {
 		this.nombre = nombre;
-		
+
 		this.id = siguienteID;
-		siguienteID++;		
+		siguienteID++;
 
 		this.interesDeportes = interesDeportes;
 		this.interesEspectaculos = interesEspectaculos;
@@ -31,7 +31,7 @@ public class Persona{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, interesCiencia, interesDeportes, interesEspectaculos, interesMusica, nombre);
+		return Objects.hash(nombre, interesDeportes, interesEspectaculos, interesCiencia, interesMusica, id);
 	}
 
 	@Override
@@ -44,5 +44,30 @@ public class Persona{
 		}
 		Persona other = (Persona) obj;
 		return id == other.id;
+	}
+
+	@Override
+	public String toString() {
+		return "Persona [nombre=" + nombre + ", id=" + id + "]";
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public int getInteresDeportes() {
+		return interesDeportes;
+	}
+
+	public int getInteresEspectaculos() {
+		return interesEspectaculos;
+	}
+
+	public int getInteresCiencia() {
+		return interesCiencia;
+	}
+
+	public int getInteresMusica() {
+		return interesMusica;
 	}
 }
